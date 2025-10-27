@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 import { corsHeaders, okJSON, badJSON } from "../lib/cors";
 
-export const config = { runtime: "nodejs20.x" };
+export const config = { runtime: "nodejs18.x" };
 
 export default async function handler(req: Request) {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });

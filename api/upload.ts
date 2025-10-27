@@ -15,6 +15,16 @@ export default async function handler(req: Request) {
 
     if (!file) return badJSON("file is required");
 
+    // Dosya boyutu kontrolü: max 20MB
+    const maxSize = 20 * 1024 * 1024; // 20MB
+    if (file.size > maxSize) return badJSON("File size exceeds 20MB limit");
+
+    // Mime türü kontrolü: sadece image/* ve video/*
+    const allowedMimeTypes = /^(image|video)\//;
+    if (!allowedMimeTypes.test(file.type)) {
+      return badJSON("Only image/* and video/* files are allowed");
+    }
+
     const bucket = process.env.SUPABASE_BUCKET!;
     const extGuess = file.name?.split(".").pop() || "bin";
     const key = `${eventId || "general"}/${Date.now()}-${Math.random().toString(36).slice(2)}.${extGuess}`;

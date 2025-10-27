@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 import { corsHeaders, okJSON, badJSON } from "../lib/cors";
 
-export const config = { runtime: "nodejs20.x" };
+export const config = { runtime: "nodejs18.x" };
 
 export default async function handler(req: Request) {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
@@ -14,6 +14,16 @@ export default async function handler(req: Request) {
     const eventId = (form.get("eventId") as string) || null;
 
     if (!file) return badJSON("file is required");
+
+    // Dosya boyutu kontrolü: max 20MB
+    const maxSize = 20 * 1024 * 1024; // 20MB
+    if (file.size > maxSize) return badJSON("File size exceeds 20MB limit");
+
+    // Mime türü kontrolü: sadece image/* ve video/*
+    const allowedMimeTypes = /^(image|video)\//;
+    if (!allowedMimeTypes.test(file.type)) {
+      return badJSON("Only image/* and video/* files are allowed");
+    }
 
     const bucket = process.env.SUPABASE_BUCKET!;
     const extGuess = file.name?.split(".").pop() || "bin";

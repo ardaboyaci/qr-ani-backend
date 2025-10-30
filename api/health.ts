@@ -1,8 +1,7 @@
-import { corsHeaders, okJSON } from "../lib/cors";
-
-export const config = { runtime: "nodejs18.x" };
-
-export default async function handler(req: Request) {
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
-  return okJSON({ status: "ok", time: new Date().toISOString() });
+export default function handler(req: any, res: any) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') { res.status(204).end(); return; }
+  res.status(200).json({ data: { status: 'ok', time: new Date().toISOString() } });
 }

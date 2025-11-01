@@ -63,4 +63,4 @@ export default async function handler(req: Request) {
   }
 
   return badJSON("Method not allowed", 405);
-}
+} 

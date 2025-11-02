@@ -1,7 +1,20 @@
 {
   "version": 2,
-  "buildCommand": "echo 'No build needed for serverless functions'",
-  "outputDirectory": ".",
+  "builds": [
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
   "headers": [
     {
       "source": "/api/(.*)",

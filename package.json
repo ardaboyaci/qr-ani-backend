@@ -4,8 +4,7 @@
   "description": "QR Anı Backend API",
   "scripts": {
     "dev": "vercel dev",
-    "deploy": "vercel --prod",
-    "build": "tsc"
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.78.0",

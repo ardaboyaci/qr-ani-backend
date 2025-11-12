@@ -14,3 +14,10 @@ dist/
 .DS_Store
 Thumbs.db
 .vercel
+
+# prevent compiled TS in api/lib from being tracked
+/api/**/*.js
+/api/**/*.js.map
+/lib/**/*.js
+/lib/**/*.js.map
+ 

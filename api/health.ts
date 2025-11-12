@@ -1,29 +1,27 @@
 // api/health.ts
-import { corsHeaders, okJSON, badJSON } from "../lib/cors";
+import { okJSON, badJSON, preflight } from "../lib/cors";
 
 export default async function handler(req: Request) {
-  // CORS preflight isteğini işle (OPTIONS)
-  if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: corsHeaders });
-  }
-  
-  // Sadece GET isteklerine izin ver
+  const origin = req.headers.get("origin");
+  if (req.method === "OPTIONS") return preflight(origin);
+
   if (req.method !== "GET") {
-    return badJSON("Method not allowed", 405);
+    return badJSON("Method not allowed", 405, origin);
   }
 
   try {
-    // Health check yanıtı
-    return okJSON({
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      service: 'QR Anı API',
-      version: '1.0.0',
-      environment: process.env.NODE_ENV || 'development'
-    });
-  } catch (error: any) {
-    // Beklenmedik bir hata olursa
-    console.error('Health check error:', error);
-    return badJSON("Internal server error", 500);
+    return okJSON(
+      {
+        status: "ok",
+        service: "QR Anı Backend API",
+        version: "1.0.0",
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || "development",
+      },
+      origin
+    );
+  } catch (err: any) {
+    console.error("health", err);
+    return badJSON("Internal server error", 500, origin);
   }
 } 

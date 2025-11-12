@@ -2,22 +2,34 @@
   "name": "qr-ani-backend",
   "version": "1.0.0",
   "description": "QR Anı Backend API",
+  "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "logs": "vercel logs",
+    "env:pull": "vercel env pull",
+    "env:add": "vercel env add"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.78.0",
     "@vercel/node": "^3.2.21",
-    "uuid": "^13.0.0"
+    "ioredis": "^5.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "qrcode": "^1.5.4",
+    "uuid": "^13.0.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.9.1",
+    "@types/qrcode": "^1.5.5",
     "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.5.13",
     "typescript": "^5.9.3",
     "vercel": "^37.0.0"
   },
   "engines": {
-    "node": ">=18.x"
+    "node": "20.x"
   }
-} 
+}

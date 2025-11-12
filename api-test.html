@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 QR Anı API Test Suite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status.online {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status.offline {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .endpoint-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        
+        .endpoint-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+        }
+        
+        .endpoint-card h3 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .method {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .method.get { background: #10b981; color: white; }
+        .method.post { background: #3b82f6; color: white; }
+        .method.put { background: #f59e0b; color: white; }
+        .method.delete { background: #ef4444; color: white; }
+        
+        .endpoint-url {
+            background: #f3f4f6;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.secondary {
+            background: #6b7280;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .response {
+            margin-top: 15px;
+            padding: 20px;
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .response.show {
+            display: block;
+        }
+        
+        .response.success {
+            border-left: 4px solid #10b981;
+        }
+        
+        .response.error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .file-preview {
+            margin-top: 10px;
+            max-width: 300px;
+            border-radius: 8px;
+        }
+        
+        #qr-image {
+            margin-top: 20px;
+        }
+        
+        #qr-image img {
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            display: none;
+            margin: 10px 0;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 QR Anı API Test Suite</h1>
+            <p>
+                <span class="status" id="status">Checking...</span>
+                <span id="api-url" style="margin-left: 20px; color: #6b7280;"></span>
+            </p>
+        </div>
+
+        <!-- Health Check -->
+        <div class="endpoint-card">
+            <h3>
+                <span class="method get">GET</span>
+                Health Check
+            </h3>
+            <div class="endpoint-url">/api</div>
+            <button onclick="testHealthCheck()">Test Health Check</button>
+            <div class="loading" id="health-loading">⏳ Loading...</div>
+            <div id="health-response" class="response"></div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="endpoint-card">
+            <h3>
+                <span class="method post">POST</span>
+                Authentication
+            </h3>
+            <div class="endpoint-url">/api/memories (action: authenticate)</div>
+            <input type="text" id="auth-event-id" placeholder="Event ID (e.g., test-event)">
+            <input type="password" id="auth-password" placeholder="Event Password">
+            <button onclick="testAuth()">Authenticate</button>
+            <div class="loading" id="auth-loading">⏳ Loading...</div>
+            <div id="auth-response" class="response"></div>
+        </div>
+
+        <!-- Get Memories -->
+        <div class="endpoint-card">
+            <h3>
+                <span class="method get">GET</span>
+                Get Memories
+            </h3>
+            <div class="endpoint-url">/api/memories?event_id=xxx&token=xxx</div>
+            <input type="text" id="get-event-id" placeholder="Event ID">
+            <input type="text" id="get-token" placeholder="Auth Token (from authentication step)">
+            <button onclick="testGetMemories()">Get Memories</button>
+            <button class="secondary" onclick="testGetAllMemories()">Get All (No Auth)</button>
+            <div class="loading" id="get-loading">⏳ Loading...</div>
+            <div id="get-response" class="response"></div>
+        </div>
+
+        <!-- Create Memory -->
+        <div class="endpoint-card">
+            <h3>
+                <span class="method post">POST</span>
+                Create Memory
+            </h3>
+            <div class="endpoint-url">/api/memories</div>
+            <input type="text" id="memory-event-id" placeholder="Event ID (optional)">
+            <input type="text" id="memory-title" placeholder="Memory Title">
+            <textarea id="memory-description" placeholder="Memory Description"></textarea>
+            <input type="text" id="memory-uploaded-by" placeholder="Uploaded By (optional)">
+            <button onclick="testCreateMemory()">Create Memory</button>
+            <div class="loading" id="create-loading">⏳ Loading...</div>
+            <div id="create-response" class="response"></div>
+        </div>
+
+        <!-- Upload Media -->
+        <div class="endpoint-card">
+            <h3>
+                <span class="method post">POST</span>
+                Upload Media (Photo/Video)
+            </h3>
+            <div class="endpoint-url">/api/upload</div>
+            <input type="text" id="upload-event-id" placeholder="Event ID">
+            <div class="file-input-wrapper">
+                <button>Choose File (Max 50MB)</button>
+                <input type="file" id="upload-file" accept="image/*,video/*" onchange="previewFile(this)">
+            </div>
+            <div id="file-info" style="margin-top: 10px; color: #6b7280;"></div>
+            <canvas id="file-preview" class="file-preview" style="display:none;"></canvas>
+            <button onclick="testUpload()">Upload Media</button>
+            <div class="loading" id="upload-loading">⏳ Uploading...</div>
+            <div id="upload-response" class="response"></div>
+        </div>
+
+        <!-- Generate QR Code -->
+        <div class="endpoint-card">
+            <h3>
+                <span class="method post">POST</span>
+                Generate QR Code
+            </h3>
+            <div class="endpoint-url">/api/qr</div>
+            <input type="text" id="qr-event-id" placeholder="Event ID">
+            <input type="password" id="qr-password" placeholder="Event Password">
+            <button onclick="testGenerateQR()">Generate QR (Data URL)</button>
+            <button class="secondary" onclick="testGenerateQRImage()">Generate QR (Image)</button>
+            <div class="loading" id="qr-loading">⏳ Generating...</div>
+            <div id="qr-response" class="response"></div>
+            <div id="qr-image"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+        document.getElementById('api-url').textContent = API_BASE_URL;
+
+        // Update online/offline status
+        function updateStatus() {
+            const statusEl = document.getElementById('status');
+            if (navigator.onLine) {
+                statusEl.className = 'status online';
+                statusEl.textContent = '🟢 Online';
+            } else {
+                statusEl.className = 'status offline';
+                statusEl.textContent = '🔴 Offline';
+            }
+        }
+
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+        updateStatus();
+
+        // Helper functions
+        function showLoading(id) {
+            document.getElementById(`${id}-loading`).classList.add('show');
+        }
+
+        function hideLoading(id) {
+            document.getElementById(`${id}-loading`).classList.remove('show');
+        }
+
+        function showResponse(id, data, isError = false) {
+            const el = document.getElementById(`${id}-response`);
+            el.textContent = JSON.stringify(data, null, 2);
+            el.className = `response show ${isError ? 'error' : 'success'}`;
+            hideLoading(id.replace('-response', ''));
+        }
+
+        // Test functions
+        async function testHealthCheck() {
+            showLoading('health');
+            try {
+                const res = await fetch(`${API_BASE_URL}/api`);
+                const data = await res.json();
+                showResponse('health', data);
+            } catch (error) {
+                showResponse('health', { error: error.message }, true);
+            }
+        }
+
+        async function testAuth() {
+            showLoading('auth');
+            const eventId = document.getElementById('auth-event-id').value;
+            const password = document.getElementById('auth-password').value;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/memories`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'authenticate', event_id: eventId, password })
+                });
+                const data = await res.json();
+                showResponse('auth', data, !res.ok);
+                
+                if (res.ok && data.token) {
+                    document.getElementById('get-token').value = data.token;
+                }
+            } catch (error) {
+                showResponse('auth', { error: error.message }, true);
+            }
+        }
+
+        async function testGetMemories() {
+            showLoading('get');
+            const eventId = document.getElementById('get-event-id').value;
+            const token = document.getElementById('get-token').value;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/memories?event_id=${eventId}&token=${token}`);
+                const data = await res.json();
+                showResponse('get', data, !res.ok);
+            } catch (error) {
+                showResponse('get', { error: error.message }, true);
+            }
+        }
+
+        async function testGetAllMemories() {
+            showLoading('get');
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/memories`);
+                const data = await res.json();
+                showResponse('get', data, !res.ok);
+            } catch (error) {
+                showResponse('get', { error: error.message }, true);
+            }
+        }
+
+        async function testCreateMemory() {
+            showLoading('create');
+            const memory = {
+                event_id: document.getElementById('memory-event-id').value || null,
+                title: document.getElementById('memory-title').value,
+                description: document.getElementById('memory-description').value,
+                uploaded_by: document.getElementById('memory-uploaded-by').value || 'anonymous'
+            };
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/memories`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(memory)
+                });
+                const data = await res.json();
+                showResponse('create', data, !res.ok);
+            } catch (error) {
+                showResponse('create', { error: error.message }, true);
+            }
+        }
+
+        function previewFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const info = document.getElementById('file-info');
+            const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+            info.textContent = `📁 ${file.name} (${sizeMB} MB)`;
+
+            if (file.type.startsWith('image/')) {
+                const canvas = document.getElementById('file-preview');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = function() {
+                    const scale = Math.min(300 / img.width, 300 / img.height);
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.style.display = 'block';
+                };
+
+                img.src = URL.createObjectURL(file);
+            }
+        }
+
+        async function testUpload() {
+            showLoading('upload');
+            const fileInput = document.getElementById('upload-file');
+            const eventId = document.getElementById('upload-event-id').value;
+
+            if (!fileInput.files[0]) {
+                showResponse('upload', { error: 'Please select a file' }, true);
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/upload`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            file: e.target.result,
+                            fileName: file.name,
+                            fileType: file.type,
+                            eventId: eventId
+                        })
+                    });
+                    const data = await res.json();
+                    showResponse('upload', data, !res.ok);
+                } catch (error) {
+                    showResponse('upload', { error: error.message }, true);
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        async function testGenerateQR() {
+            showLoading('qr');
+            const eventId = document.getElementById('qr-event-id').value;
+            const password = document.getElementById('qr-password').value;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/qr`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ eventId, password })
+                });
+                const data = await res.json();
+                showResponse('qr', data, !res.ok);
+
+                if (data.qrCode) {
+                    document.getElementById('qr-image').innerHTML = 
+                        `<img src="${data.qrCode}" alt="QR Code">`;
+                }
+            } catch (error) {
+                showResponse('qr', { error: error.message }, true);
+            }
+        }
+
+        async function testGenerateQRImage() {
+            showLoading('qr');
+            const eventId = document.getElementById('qr-event-id').value;
+            const password = document.getElementById('qr-password').value;
+
+            try {
+                const url = `${API_BASE_URL}/api/qr?eventId=${eventId}&password=${encodeURIComponent(password)}`;
+                document.getElementById('qr-image').innerHTML = 
+                    `<img src="${url}" alt="QR Code">`;
+                showResponse('qr', { success: true, imageUrl: url });
+            } catch (error) {
+                showResponse('qr', { error: error.message }, true);
+            }
+        }
+
+        // Test health check on load
+        window.addEventListener('load', testHealthCheck);
+    </script>
+</body>
+</html> 

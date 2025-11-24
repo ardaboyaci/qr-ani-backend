@@ -3,37 +3,41 @@ import { NextResponse } from 'next/server'
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, x-client-info, apikey',
-  'Access-Control-Max-Age': '86400',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey',
 }
 
-export function withCors(response: NextResponse): NextResponse {
-  Object.entries(corsHeaders).forEach(([key, value]) => {
-    response.headers.set(key, value)
+// "origin" parametresini kabul edecek şekilde güncellendi
+export function preflight(origin: string = '*') {
+  return NextResponse.json({}, {
+    status: 200,
+    headers: {
+      ...corsHeaders,
+      'Access-Control-Allow-Origin': origin,
+    },
   })
-  return response
 }
 
-export function okJSON<T>(data: T, status = 200): NextResponse {
+// Data ve Origin kabul eder
+export function okJSON(data: any, origin: string = '*') {
   return NextResponse.json(data, {
-    status,
-    headers: corsHeaders,
+    status: 200,
+    headers: {
+      ...corsHeaders,
+      'Access-Control-Allow-Origin': origin,
+    },
   })
 }
 
-export function badJSON(message: string, status = 400): NextResponse {
+// Mesaj, Status ve Origin kabul eder (API rotaların bunu 3 parametreli kullanıyor)
+export function badJSON(message: string, status: number = 400, origin: string = '*') {
   return NextResponse.json(
     { error: message },
     {
       status,
-      headers: corsHeaders,
+      headers: {
+        ...corsHeaders,
+        'Access-Control-Allow-Origin': origin,
+      },
     }
   )
-}
-
-export function preflight(): NextResponse {
-  return new NextResponse(null, {
-    status: 204,
-    headers: corsHeaders,
-  })
-}
+} 

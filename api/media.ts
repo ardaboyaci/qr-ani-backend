@@ -1,10 +1,13 @@
-import { supabase } from "../lib/supabase";
-import { corsHeaders, okJSON, badJSON } from "../lib/cors";
+import { createClient } from "@/utils/supabase/server";
+import { corsHeaders, okJSON, badJSON, preflight } from "@/utils/cors";
 
 export const config = { runtime: "nodejs" };
 
 export default async function handler(req: Request) {
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
+  const origin = req.headers.get("origin");
+  if (req.method === "OPTIONS") return preflight(origin);
+
+  const supabase = await createClient();
 
   if (req.method === "GET") {
     const url = new URL(req.url);
@@ -22,7 +25,7 @@ export default async function handler(req: Request) {
     if (eventId) query = query.eq("event_id", eventId);
 
     const { data, error, count } = await query;
-    if (error) return badJSON(error.message, 500);
+    if (error) return badJSON(error.message, 500, origin);
 
     return okJSON({
       items: data,
@@ -32,35 +35,37 @@ export default async function handler(req: Request) {
         total: count || 0,
         totalPages: Math.ceil((count || 0) / limit),
       },
-    });
+    }, origin || undefined);
   }
 
   if (req.method === "POST") {
     try {
       const body = await req.json();
-      if (!body?.url) return badJSON("url is required");
+      if (!body?.url) return badJSON("url is required", 400, origin);
+
       const { data, error } = await supabase.from("media").insert({
         event_id: body.eventId || null,
         url: body.url,
         type: body.type || null,
         title: body.title || null,
       }).select().single();
-      if (error) return badJSON(error.message, 500);
+
+      if (error) return badJSON(error.message, 500, origin);
       return okJSON(data, { status: 201 });
     } catch (e: any) {
-      return badJSON(e?.message || "invalid json");
+      return badJSON(e?.message || "invalid json", 400, origin);
     }
   }
 
   if (req.method === "DELETE") {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
-    if (!id) return badJSON("id parameter is required");
+    if (!id) return badJSON("id parameter is required", 400, origin);
 
     const { error } = await supabase.from("media").delete().eq("id", id);
-    if (error) return badJSON(error.message, 500);
-    return okJSON({ success: true });
+    if (error) return badJSON(error.message, 500, origin);
+    return okJSON({ success: true }, origin || undefined);
   }
 
-  return badJSON("Method not allowed", 405);
-} 
+  return badJSON("Method not allowed", 405, origin);
+}

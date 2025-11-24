@@ -1,0 +1,65 @@
+{
+  "node": {
+    "00ca849c911d51cd96dd328ae1be6be1e7e1db4eb5": {
+      "workers": {
+        "app/dashboard/page": {
+          "moduleId": 34290,
+          "async": false,
+          "exportedName": "signOut",
+          "filename": "qr-ani-backend/app/auth/actions.ts"
+        },
+        "app/login/page": {
+          "moduleId": 35542,
+          "async": false,
+          "exportedName": "signOut",
+          "filename": "qr-ani-backend/app/auth/actions.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/page": "rsc",
+        "app/login/page": "rsc"
+      },
+      "filename": "qr-ani-backend/app/auth/actions.ts",
+      "exportedName": "signOut"
+    },
+    "40b690b03b05a9879c01da6c5822adf03a83937aca": {
+      "workers": {
+        "app/dashboard/page": {
+          "moduleId": 34290,
+          "async": false,
+          "exportedName": "signInWithOAuth",
+          "filename": "qr-ani-backend/app/auth/actions.ts"
+        },
+        "app/login/page": {
+          "moduleId": 35542,
+          "async": false,
+          "exportedName": "signInWithOAuth",
+          "filename": "qr-ani-backend/app/auth/actions.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/page": "rsc",
+        "app/login/page": "rsc"
+      },
+      "filename": "qr-ani-backend/app/auth/actions.ts",
+      "exportedName": "signInWithOAuth"
+    },
+    "0004562aef7a20bf07b31123e84937daab90410b26": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": 35542,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "qr-ani-backend/app/login/page.tsx"
+        }
+      },
+      "layer": {
+        "app/login/page": "rsc"
+      },
+      "filename": "qr-ani-backend/app/login/page.tsx",
+      "exportedName": "$$RSC_SERVER_ACTION_0"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "17F2OB/geMpKTak/42WQcI42sLq+ZtZFGJ+uWZydPFU="
+}

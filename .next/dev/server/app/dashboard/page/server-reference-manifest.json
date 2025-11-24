@@ -1,0 +1,35 @@
+{
+  "node": {
+    "00c3692d36971f39c3b1a95e6c7f0eb740a48860ae": {
+      "workers": {
+        "app/dashboard/page": {
+          "moduleId": "[project]/qr-ani-backend/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/qr-ani-backend/app/auth/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signOut",
+          "filename": "qr-ani-backend/app/auth/actions.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/page": "rsc"
+      },
+      "exportedName": "signOut",
+      "filename": "qr-ani-backend/app/auth/actions.ts"
+    },
+    "4002190858688e049e717b6e2f8aee5c55c03eae1d": {
+      "workers": {
+        "app/dashboard/page": {
+          "moduleId": "[project]/qr-ani-backend/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/qr-ani-backend/app/auth/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "signInWithOAuth",
+          "filename": "qr-ani-backend/app/auth/actions.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/page": "rsc"
+      },
+      "exportedName": "signInWithOAuth",
+      "filename": "qr-ani-backend/app/auth/actions.ts"
+    }
+  },
+  "edge": {}
+}

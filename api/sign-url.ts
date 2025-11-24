@@ -1,6 +1,5 @@
-// api/sign-url.ts
-import { supabase } from "../lib/supabase";
-import { okJSON, badJSON, preflight } from "../lib/cors";
+import { createClient } from "@/utils/supabase/server";
+import { okJSON, badJSON, preflight } from "@/utils/cors";
 
 const ALLOWED_MIME = new Set([
   "image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp",
@@ -17,6 +16,8 @@ export default async function handler(req: Request) {
   const origin = req.headers.get("origin");
   if (req.method === "OPTIONS") return preflight(origin);
   if (req.method !== "POST") return badJSON("Method not allowed", 405, origin);
+
+  const supabase = await createClient();
 
   try {
     const { eventSlug, files } = (await req.json()) as {
@@ -104,9 +105,9 @@ export default async function handler(req: Request) {
       });
     }
 
-    return okJSON({ uploads }, origin);
+    return okJSON({ uploads }, origin || undefined);
   } catch (e: any) {
     console.error("sign-url", e);
     return badJSON(e?.message || "unexpected error", 500, origin);
   }
-} 
+}

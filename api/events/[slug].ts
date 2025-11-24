@@ -1,87 +1,31 @@
-// api/events/[slug].ts
-import { supabase } from "../../lib/supabase";
-import { corsHeaders, okJSON, badJSON } from "../../lib/cors";
+import { createClient } from "@/utils/supabase/server";
+import { corsHeaders, okJSON, badJSON, preflight } from "@/utils/cors";
 
 export default async function handler(req: Request) {
-  // CORS preflight
-  if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: corsHeaders });
-  }
+  const origin = req.headers.get("origin");
+  if (req.method === "OPTIONS") return preflight(origin);
 
-  // URL'den [slug] parametresini al
+  const supabase = await createClient();
+
+  // URL'den slug'ı al (basitçe URL path'inden)
+  // Not: Next.js App Router Route Handler'da params argümanı da kullanılabilir ama
+  // bu dosya yapısı (api/events/[slug].ts) Vercel Function gibi duruyor.
+  // URL parsing ile slug'ı almaya çalışalım.
   const url = new URL(req.url);
-  const slug = url.pathname.split('/').pop();
+  const pathParts = url.pathname.split('/');
+  // /api/events/SLUG varsayımıyla son parça veya sondan bir önceki
+  const slug = pathParts[pathParts.length - 1];
 
-  if (!slug) return badJSON("Slug is required", 400);
+  if (req.method === "GET") {
+    const { data: event, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("slug", slug)
+      .single();
 
-  try {
-    // === GET /api/events/:slug ===
-    // (Eski getEventBySlug mantığı)
-    if (req.method === "GET") {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-
-      if (error) {
-        if (error.code === 'PGRST116') return badJSON('Event not found', 404);
-        throw error;
-      }
-      return okJSON(data);
-    }
-
-    // === PUT /api/events/:slug ===
-    // (Eski updateEvent mantığı)
-    if (req.method === "PUT") {
-      const body = await req.json();
-      const { title, date, theme, cover_url } = body;
-
-      const updates: { [key: string]: any } = {};
-      if (title) updates.title = title;
-      if (date) updates.date = date;
-      if (theme) updates.theme = theme;
-      if (cover_url !== undefined) updates.cover_url = cover_url;
-
-      if (Object.keys(updates).length === 0) {
-        return badJSON('No fields to update', 400);
-      }
-
-      const { data, error } = await supabase
-        .from('events')
-        .update(updates)
-        .eq('slug', slug)
-        .select()
-        .single();
-      
-      if (error) {
-        if (error.code === 'PGRST116') return badJSON('Event not found', 404);
-        throw error;
-      }
-      return okJSON(data);
-    }
-
-    // === DELETE /api/events/:slug ===
-    // (Eski deleteEvent mantığı)
-    if (req.method === "DELETE") {
-      const { data, error } = await supabase
-        .from('events')
-        .delete()
-        .eq('slug', slug)
-        .select()
-        .single();
-
-      if (error) {
-        if (error.code === 'PGRST116') return badJSON('Event not found', 404);
-        throw error;
-      }
-      return okJSON(data);
-    }
-
-    // İzin verilmeyen diğer metotlar
-    return badJSON("Method not allowed", 405);
-
-  } catch (error: any) {
-    return badJSON(error.message || 'Internal Server Error', 500);
+    if (error) return badJSON(error.message, 404, origin);
+    return okJSON(event, origin || undefined);
   }
-} 
+
+  return badJSON("Method not allowed", 405, origin);
+}

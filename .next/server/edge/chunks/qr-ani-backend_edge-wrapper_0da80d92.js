@@ -1,0 +1,3 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["chunks/qr-ani-backend_edge-wrapper_0da80d92.js",8112,e=>{"use strict";self._ENTRIES||={};let t=Promise.resolve().then(()=>e.i(36612));t.catch(()=>{}),self._ENTRIES.middleware_middleware=new Proxy(t,{get(e,t){if("then"===t)return(t,n)=>e.then(t,n);let n=(...n)=>e.then(e=>(0,e[t])(...n));return n.then=(n,r)=>e.then(e=>e[t]).then(n,r),n}}),e.s([])}]);
+
+//# sourceMappingURL=qr-ani-backend_edge-wrapper_0da80d92.js.map

@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { corsHeaders, okJSON, badJSON, preflight } from "@/utils/cors";
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin") ?? '*';
   if (req.method === "OPTIONS") return preflight(origin);
 
   const supabase = await createClient();
@@ -14,7 +14,7 @@ export default async function handler(req: Request) {
   const url = new URL(req.url);
   const pathParts = url.pathname.split('/');
   // /api/events/SLUG varsayımıyla son parça veya sondan bir önceki
-  const slug = pathParts[pathParts.length - 1];
+  const slug = pathParts[pathParts.length - 1] || '';
 
   if (req.method === "GET") {
     const { data: event, error } = await supabase
@@ -28,4 +28,4 @@ export default async function handler(req: Request) {
   }
 
   return badJSON("Method not allowed", 405, origin);
-}
+} 

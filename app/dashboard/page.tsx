@@ -30,7 +30,7 @@ export default async function DashboardPage() {
                         </div>
                     ) : (
                         <div className="flex h-24 w-24 items-center justify-center rounded-full bg-indigo-100 text-3xl font-bold text-indigo-600">
-                            {user.email?.[0].toUpperCase()}
+                            {user.email?.[0]?.toUpperCase() ?? '?'}
                         </div>
                     )}
 

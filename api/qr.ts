@@ -6,7 +6,7 @@ import { okJSON, badJSON, preflight } from "../lib/cors";
 const MAX_LEN = 1024 as const;
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin") ?? '*';
   if (req.method === "OPTIONS") return preflight(origin);
 
   try {
@@ -21,7 +21,7 @@ export default async function handler(req: Request) {
       headers.set("access-control-allow-origin", origin || "*");
       headers.set("access-control-allow-methods", "GET,POST,OPTIONS");
       headers.set("access-control-allow-headers", "content-type, authorization");
-      return new Response(buffer, { status: 200, headers });
+      return new Response(buffer as unknown as BodyInit, { status: 200, headers });
     }
 
     if (req.method === "GET") {
@@ -33,7 +33,7 @@ export default async function handler(req: Request) {
       headers.set("access-control-allow-origin", origin || "*");
       headers.set("access-control-allow-methods", "GET,POST,OPTIONS");
       headers.set("access-control-allow-headers", "content-type, authorization");
-      return new Response(buffer, { status: 200, headers });
+      return new Response(buffer as unknown as BodyInit, { status: 200, headers });
     }
 
     return badJSON("Method not allowed", 405, origin);

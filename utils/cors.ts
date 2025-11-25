@@ -6,38 +6,37 @@ export const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey',
 }
 
-// "origin" parametresini kabul edecek şekilde güncellendi
-export function preflight(origin: string = '*') {
+export function preflight(origin: string | null = '*') {
   return NextResponse.json({}, {
     status: 200,
     headers: {
       ...corsHeaders,
-      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Origin': origin || '*',
     },
   })
 }
 
-// Data ve Origin kabul eder
-export function okJSON(data: any, origin: string = '*') {
+export function okJSON(data: any, origin: string | null = '*', init?: ResponseInit) {
   return NextResponse.json(data, {
     status: 200,
+    ...init,
     headers: {
       ...corsHeaders,
-      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Origin': origin || '*',
+      ...init?.headers,
     },
   })
 }
 
-// Mesaj, Status ve Origin kabul eder (API rotaların bunu 3 parametreli kullanıyor)
-export function badJSON(message: string, status: number = 400, origin: string = '*') {
+export function badJSON(message: string, status: number = 400, origin: string | null = '*') {
   return NextResponse.json(
     { error: message },
     {
       status,
       headers: {
         ...corsHeaders,
-        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Origin': origin || '*',
       },
     }
   )
-} 
+}

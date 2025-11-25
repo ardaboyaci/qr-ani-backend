@@ -13,7 +13,7 @@ function sanitize(name: string) {
 }
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin") ?? '*';
   if (req.method === "OPTIONS") return preflight(origin);
   if (req.method !== "POST") return badJSON("Method not allowed", 405, origin);
 
@@ -83,18 +83,18 @@ export default async function handler(req: Request) {
       const { data: ins, error: insErr } = await supabase
         .from("media")
         .insert({
-          event_id: ev.id,
+          event_id: (ev as any).id,
           file_path: key,
           mime: f.mime,
           status: "pending"
-        })
+        } as any)
         .select("id")
         .single();
 
       if (insErr) {
         return badJSON(`DB insert error: ${insErr.message}`, 500, origin);
       }
-      mediaId = ins?.id ?? null;
+      mediaId = (ins as any)?.id ?? null;
 
       uploads.push({
         path: data.path,

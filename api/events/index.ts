@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { corsHeaders, okJSON, badJSON, preflight } from "@/utils/cors";
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin") ?? '*';
   if (req.method === "OPTIONS") return preflight(origin);
 
   const supabase = await createClient();
@@ -32,12 +32,12 @@ export default async function handler(req: Request) {
           slug: body.slug,
           date: body.date,
           location: body.location
-        })
+        } as any)
         .select()
         .single();
 
       if (error) return badJSON(error.message, 500, origin);
-      return okJSON(data, { status: 201 });
+      return okJSON(data, origin, { status: 201 });
     } catch (e: any) {
       return badJSON(e.message, 400, origin);
     }

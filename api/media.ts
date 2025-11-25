@@ -4,7 +4,7 @@ import { corsHeaders, okJSON, badJSON, preflight } from "@/utils/cors";
 export const config = { runtime: "nodejs" };
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin") ?? '*';
   if (req.method === "OPTIONS") return preflight(origin);
 
   const supabase = await createClient();
@@ -48,10 +48,10 @@ export default async function handler(req: Request) {
         url: body.url,
         type: body.type || null,
         title: body.title || null,
-      }).select().single();
+      } as any).select().single();
 
       if (error) return badJSON(error.message, 500, origin);
-      return okJSON(data, { status: 201 });
+      return okJSON(data, origin, { status: 201 });
     } catch (e: any) {
       return badJSON(e?.message || "invalid json", 400, origin);
     }

@@ -2,7 +2,7 @@
 import { okJSON, badJSON, preflight } from "../lib/cors";
 
 export default async function handler(req: Request) {
-  const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin") ?? '*';
   if (req.method === "OPTIONS") return preflight(origin);
 
   if (req.method !== "GET") {

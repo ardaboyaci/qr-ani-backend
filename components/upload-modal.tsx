@@ -29,10 +29,12 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const newFiles = Array.from(e.target.files)
-            // Validate size (50MB)
             const validFiles = newFiles.filter(file => {
-                if (file.size > 50 * 1024 * 1024) {
-                    toast.error(`${file.name} 50MB'dan büyük!`)
+                const isVideo = file.type.startsWith('video/')
+                const limit = isVideo ? 500 * 1024 * 1024 : 50 * 1024 * 1024
+
+                if (file.size > limit) {
+                    toast.error(`${file.name} ${isVideo ? '500MB' : '50MB'}'dan büyük!`)
                     return false
                 }
                 return true
@@ -47,8 +49,11 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
         if (e.dataTransfer.files) {
             const newFiles = Array.from(e.dataTransfer.files)
             const validFiles = newFiles.filter(file => {
-                if (file.size > 50 * 1024 * 1024) {
-                    toast.error(`${file.name} 50MB'dan büyük!`)
+                const isVideo = file.type.startsWith('video/')
+                const limit = isVideo ? 500 * 1024 * 1024 : 50 * 1024 * 1024
+
+                if (file.size > limit) {
+                    toast.error(`${file.name} ${isVideo ? '500MB' : '50MB'}'dan büyük!`)
                     return false
                 }
                 return true
@@ -76,6 +81,8 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
 
                 // Compress if image
                 let fileToUpload = file
+                let mediaType = 'image'
+
                 if (file.type.startsWith('image/')) {
                     try {
                         const options = {
@@ -84,15 +91,19 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                             useWebWorker: true,
                             onProgress: (p: number) => {
                                 // Optional: update UI with compression progress if needed
-                                // For now we just show "Compressing..." via state or toast if we wanted, 
-                                // but the user asked for a distinct state. 
-                                // We can update the progress text below.
                             }
                         }
                         fileToUpload = await imageCompression(file, options)
                     } catch (error) {
                         console.error('Compression failed:', error)
                         // Fallback to original file
+                    }
+                } else if (file.type.startsWith('video/')) {
+                    mediaType = 'video'
+                    // Skip compression for video, but check size again just in case
+                    if (file.size > 500 * 1024 * 1024) {
+                        toast.error(`${file.name} 500MB'dan büyük!`)
+                        continue // Skip this file
                     }
                 }
 
@@ -115,6 +126,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                         event_id: eventId,
                         file_url: publicUrl,
                         guest_hash: guestHash,
+                        media_type: mediaType as 'image' | 'video',
                     })
 
                 if (dbError) throw dbError
@@ -167,7 +179,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                         >
                             {/* Header */}
                             <div className="p-4 border-b flex items-center justify-between">
-                                <h2 className="text-lg font-semibold text-gray-900">Anılarını Ekle</h2>
+                                <h2 className="text-lg font-semibold text-gray-900">Sınırsız Fotoğraf ve Uzun Video Yükle</h2>
                                 <button onClick={onClose} disabled={uploading} className="p-2 hover:bg-gray-100 rounded-full">
                                     <X className="w-5 h-5 text-gray-500" />
                                 </button>
@@ -221,7 +233,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                                     ref={fileInputRef}
                                     className="hidden"
                                     multiple
-                                    accept="image/*,video/*"
+                                    accept="image/*,video/mp4,video/quicktime,video/webm"
                                     onChange={handleFileSelect}
                                 />
                             </div>
@@ -250,6 +262,9 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                                         {files.length > 0 ? `${files.length} Dosyayı Yükle` : 'Dosya Seçin'}
                                     </button>
                                 )}
+                                <p className="text-xs text-gray-400 text-center mt-3">
+                                    Videolar için önerilen maks: 500MB
+                                </p>
                             </div>
                         </motion.div>
                     </motion.div>

@@ -69,7 +69,7 @@ export function Lightbox({ isOpen, onClose, photo, onNext, onPrev, onLike, isLik
                     className="relative max-w-[90vw] max-h-[90vh]"
                     onClick={e => e.stopPropagation()}
                 >
-                    {photo.file_url.endsWith('.mp4') ? (
+                    {(photo.media_type === 'video' || photo.file_url.endsWith('.mp4')) ? (
                         <video
                             src={photo.file_url}
                             controls

@@ -50,7 +50,7 @@ export function PhotoCard({ photo, onClick, isLikedInitial }: PhotoCardProps) {
             className="relative break-inside-avoid mb-4 group cursor-pointer rounded-lg overflow-hidden bg-gray-900"
             onClick={onClick}
         >
-            {photo.file_url.endsWith('.mp4') ? (
+            {(photo.media_type === 'video' || photo.file_url.endsWith('.mp4')) ? (
                 <div className="relative">
                     <video src={photo.file_url} className="w-full h-auto object-cover" />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20">

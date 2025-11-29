@@ -1,5 +1,3 @@
 {
-  "/event/[slug]/page": "app/event/[slug]/page.js",
-  "/event/[slug]/gallery/page": "app/event/[slug]/gallery/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/event/[slug]/slideshow/page": "app/event/[slug]/slideshow/page.js"
 }

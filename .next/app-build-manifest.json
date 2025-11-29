@@ -11,25 +11,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/event/[slug]/layout.js"
     ],
-    "/event/[slug]/page": [
+    "/event/[slug]/slideshow/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/event/[slug]/page.js"
-    ],
-    "/event/[slug]/gallery/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/event/[slug]/gallery/page.js"
-    ],
-    "/dashboard/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/layout.js"
-    ],
-    "/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/page.js"
+      "static/chunks/app/event/[slug]/slideshow/page.js"
     ]
   }
 }

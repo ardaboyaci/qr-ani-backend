@@ -51,6 +51,7 @@ export interface Database {
           guest_hash: string
           likes_count: number
           is_hidden: boolean
+          media_type: 'image' | 'video'
         }
         Insert: {
           id?: number
@@ -61,6 +62,7 @@ export interface Database {
           guest_hash: string
           likes_count?: number
           is_hidden?: boolean
+          media_type?: 'image' | 'video'
         }
         Update: {
           id?: number
@@ -71,6 +73,7 @@ export interface Database {
           guest_hash?: string
           likes_count?: number
           is_hidden?: boolean
+          media_type?: 'image' | 'video'
         }
       }
       favorites: {

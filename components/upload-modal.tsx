@@ -8,6 +8,7 @@ import { getGuestHash } from '@/utils/guest-hash'
 import { toast } from 'sonner'
 import confetti from 'canvas-confetti'
 import { WhatsAppShareModal } from './whatsapp-share-modal'
+import imageCompression from 'browser-image-compression'
 
 interface UploadModalProps {
     isOpen: boolean
@@ -73,10 +74,32 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                 const fileExt = file.name.split('.').pop()
                 const fileName = `${eventId}/${crypto.randomUUID()}.${fileExt}`
 
+                // Compress if image
+                let fileToUpload = file
+                if (file.type.startsWith('image/')) {
+                    try {
+                        const options = {
+                            maxSizeMB: 1,
+                            maxWidthOrHeight: 1920,
+                            useWebWorker: true,
+                            onProgress: (p: number) => {
+                                // Optional: update UI with compression progress if needed
+                                // For now we just show "Compressing..." via state or toast if we wanted, 
+                                // but the user asked for a distinct state. 
+                                // We can update the progress text below.
+                            }
+                        }
+                        fileToUpload = await imageCompression(file, options)
+                    } catch (error) {
+                        console.error('Compression failed:', error)
+                        // Fallback to original file
+                    }
+                }
+
                 // Upload to Storage
                 const { error: uploadError } = await supabase.storage
                     .from('uploads')
-                    .upload(fileName, file)
+                    .upload(fileName, fileToUpload)
 
                 if (uploadError) throw uploadError
 
@@ -208,7 +231,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                                 {uploading ? (
                                     <div className="space-y-2">
                                         <div className="flex justify-between text-sm text-gray-600">
-                                            <span>Yükleniyor...</span>
+                                            <span>{progress === 0 ? 'Sıkıştırılıyor...' : 'Yükleniyor...'}</span>
                                             <span>{progress}%</span>
                                         </div>
                                         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">

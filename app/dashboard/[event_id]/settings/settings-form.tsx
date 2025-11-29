@@ -86,24 +86,62 @@ export function SettingsForm({ event }: { event: Event }) {
 
     const publicUrl = `${window.location.origin}/event/${event.slug}`
 
+    const [downloadingQR, setDownloadingQR] = useState(false)
+
     const downloadQR = () => {
-        const svg = document.getElementById("event-qr")
-        if (!svg) return
-        const svgData = new XMLSerializer().serializeToString(svg)
-        const canvas = document.createElement("canvas")
-        const ctx = canvas.getContext("2d")
-        const img = new Image()
-        img.onload = () => {
-            canvas.width = img.width
-            canvas.height = img.height
-            ctx?.drawImage(img, 0, 0)
-            const pngFile = canvas.toDataURL("image/png")
-            const downloadLink = document.createElement("a")
-            downloadLink.download = `qr-${event.slug}.png`
-            downloadLink.href = pngFile
-            downloadLink.click()
+        try {
+            setDownloadingQR(true)
+            const svg = document.getElementById("event-qr")
+            if (!svg) {
+                toast.error('QR kod bulunamadı')
+                setDownloadingQR(false)
+                return
+            }
+
+            // Create a clone to modify dimensions for high-res export
+            const clonedSvg = svg.cloneNode(true) as SVGElement
+            const size = 1000 // High resolution size
+            clonedSvg.setAttribute('width', size.toString())
+            clonedSvg.setAttribute('height', size.toString())
+
+            const svgData = new XMLSerializer().serializeToString(clonedSvg)
+            const canvas = document.createElement("canvas")
+            const ctx = canvas.getContext("2d")
+            const img = new Image()
+
+            img.onload = () => {
+                canvas.width = size
+                canvas.height = size
+
+                // Fill white background (transparent by default)
+                if (ctx) {
+                    ctx.fillStyle = '#FFFFFF'
+                    ctx.fillRect(0, 0, size, size)
+                    ctx.drawImage(img, 0, 0, size, size)
+                }
+
+                const pngFile = canvas.toDataURL("image/png")
+                const downloadLink = document.createElement("a")
+                downloadLink.download = `${event.couple_name.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-qr.png`
+                downloadLink.href = pngFile
+                downloadLink.click()
+                setDownloadingQR(false)
+                toast.success('QR Kod indirildi')
+            }
+
+            img.onerror = () => {
+                toast.error('QR kod oluşturulurken hata oluştu')
+                setDownloadingQR(false)
+            }
+
+            // Use encodeURIComponent for better compatibility
+            img.src = "data:image/svg+xml;utf8," + encodeURIComponent(svgData)
+
+        } catch (error) {
+            console.error('QR Download Error:', error)
+            toast.error('İndirme işlemi başarısız oldu')
+            setDownloadingQR(false)
         }
-        img.src = "data:image/svg+xml;base64," + btoa(svgData)
     }
 
     return (
@@ -250,10 +288,11 @@ export function SettingsForm({ event }: { event: Event }) {
 
                         <button
                             onClick={downloadQR}
-                            className="w-full py-2.5 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+                            disabled={downloadingQR}
+                            className="w-full py-2.5 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <QrCode className="w-4 h-4" />
-                            QR Kodu İndir (PNG)
+                            {downloadingQR ? <Loader2 className="w-4 h-4 animate-spin" /> : <QrCode className="w-4 h-4" />}
+                            {downloadingQR ? 'Hazırlanıyor...' : 'QR Kodu İndir (PNG)'}
                         </button>
                     </div>
                 </div>

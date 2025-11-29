@@ -19,6 +19,7 @@
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.84.0",
     "@vercel/node": "^3.2.21",
+    "browser-image-compression": "^2.0.2",
     "canvas-confetti": "^1.9.4",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",

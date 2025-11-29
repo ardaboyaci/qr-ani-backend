@@ -1,9 +1,0 @@
-{
-  "/_global-error/page": "/_global-error",
-  "/_not-found/page": "/_not-found",
-  "/auth/auth-code-error/page": "/auth/auth-code-error",
-  "/auth/callback/route": "/auth/callback",
-  "/dashboard/page": "/dashboard",
-  "/login/page": "/login",
-  "/page": "/"
-}

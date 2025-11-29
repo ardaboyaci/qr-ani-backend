@@ -1,57 +1,79 @@
 import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
-import { signOut } from '@/app/auth/actions'
-import Image from 'next/image'
+import Link from 'next/link'
+import { Plus, Settings, ExternalLink } from 'lucide-react'
+import { CreateEventModal } from '@/components/create-event-modal'
+import { EventListClient } from './event-list-client'
 
 export default async function DashboardPage() {
     const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
+    if (!user) return null // Middleware handles redirect
 
-    if (!user) {
-        return redirect('/login')
-    }
+    const { data: events } = await supabase
+        .from('events')
+        .select('*, uploads(count)')
+        .eq('owner_id', user.id)
+        .order('created_at', { ascending: false })
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-            <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-8 shadow-lg">
-                <div className="flex flex-col items-center">
-                    {user.user_metadata.avatar_url ? (
-                        <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-indigo-100 shadow-sm">
-                            <Image
-                                src={user.user_metadata.avatar_url}
-                                alt="Profile"
-                                fill
-                                className="object-cover"
-                                sizes="96px"
-                            />
-                        </div>
-                    ) : (
-                        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-indigo-100 text-3xl font-bold text-indigo-600">
-                            {user.email?.[0]?.toUpperCase() ?? '?'}
-                        </div>
-                    )}
-
-                    <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
-                        Hoşgeldin
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-gray-600">
-                        {user.email}
-                    </p>
+        <div className="space-y-8">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-playfair font-bold text-gray-900">Etkinliklerim</h1>
+                    <p className="text-gray-500 mt-1">Tüm organizasyonlarınızı buradan yönetebilirsiniz.</p>
                 </div>
+                <EventListClient userId={user.id} />
+            </div>
 
-                <div className="mt-8">
-                    <form action={signOut}>
-                        <button
-                            type="submit"
-                            className="flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                        >
-                            Çıkış Yap
-                        </button>
-                    </form>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {events?.map((event: any) => (
+                    <div key={event.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group">
+                        <div className="h-32 bg-gradient-to-r from-emerald-500 to-teal-600 p-6 flex flex-col justify-between text-white">
+                            <h3 className="font-playfair text-xl font-bold truncate">{event.couple_name}</h3>
+                            <div className="flex items-center justify-between text-sm opacity-90">
+                                <span>
+                                    {event.wedding_date
+                                        ? new Date(event.wedding_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })
+                                        : 'Tarih Belirlenmedi'}
+                                </span>
+                                <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">
+                                    {event.uploads?.[0]?.count || 0} Medya
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="p-4 flex items-center gap-2">
+                            <Link
+                                href={`/dashboard/${event.id}`}
+                                className="flex-1 py-2 text-center bg-gray-50 hover:bg-gray-100 rounded-lg text-gray-700 font-medium transition-colors"
+                            >
+                                Yönet
+                            </Link>
+                            <Link
+                                href={`/dashboard/${event.id}/settings`}
+                                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                                title="Ayarlar"
+                            >
+                                <Settings className="w-5 h-5" />
+                            </Link>
+                            <Link
+                                href={`/event/${event.slug}`}
+                                target="_blank"
+                                className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                                title="Görüntüle"
+                            >
+                                <ExternalLink className="w-5 h-5" />
+                            </Link>
+                        </div>
+                    </div>
+                ))}
+
+                {(!events || events.length === 0) && (
+                    <div className="col-span-full py-12 text-center bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+                        <p className="text-gray-500 mb-4">Henüz hiç etkinlik oluşturmadınız.</p>
+                    </div>
+                )}
             </div>
         </div>
     )

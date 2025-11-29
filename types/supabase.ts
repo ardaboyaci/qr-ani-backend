@@ -96,6 +96,52 @@ export interface Database {
           guest_hash?: string
         }
       }
+      comments: {
+        Row: {
+          id: number
+          created_at: string
+          upload_id: number
+          content: string
+          guest_name: string | null
+          is_couple_reply: boolean
+        }
+        Insert: {
+          id?: number
+          created_at?: string
+          upload_id: number
+          content: string
+          guest_name?: string | null
+          is_couple_reply?: boolean
+        }
+        Update: {
+          id?: number
+          created_at?: string
+          upload_id?: number
+          content?: string
+          guest_name?: string | null
+          is_couple_reply?: boolean
+        }
+      }
+      likes: {
+        Row: {
+          id: number
+          created_at: string
+          upload_id: number
+          guest_hash: string
+        }
+        Insert: {
+          id?: number
+          created_at?: string
+          upload_id: number
+          guest_hash: string
+        }
+        Update: {
+          id?: number
+          created_at?: string
+          upload_id?: number
+          guest_hash?: string
+        }
+      }
     }
     Views: {
       [key: string]: {

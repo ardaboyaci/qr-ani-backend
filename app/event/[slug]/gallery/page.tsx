@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { notFound } from 'next/navigation'
 import { GalleryGrid } from '@/components/gallery-grid'
+import { ClientLogin } from '@/components/client-login'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
@@ -47,6 +48,11 @@ export default async function GalleryPage({ params }: { params: Promise<{ slug: 
 
             <div className="max-w-7xl mx-auto px-4 py-6">
                 <GalleryGrid eventId={event.id} />
+            </div>
+
+            {/* Footer Login */}
+            <div className="py-8 flex justify-center pb-24 md:pb-8">
+                <ClientLogin eventId={event.id} />
             </div>
         </main>
     )

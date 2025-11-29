@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Heart, Play } from 'lucide-react'
+import { Heart, Play, Trash2, EyeOff } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { tr } from 'date-fns/locale'
 import { createClient } from '@/utils/supabase/client'
@@ -11,9 +11,12 @@ interface PhotoCardProps {
     photo: any
     onClick: () => void
     isLikedInitial: boolean
+    isClientAdmin?: boolean
+    onDelete?: () => void
+    onHide?: () => void
 }
 
-export function PhotoCard({ photo, onClick, isLikedInitial }: PhotoCardProps) {
+export function PhotoCard({ photo, onClick, isLikedInitial, isClientAdmin, onDelete, onHide }: PhotoCardProps) {
     const [isLiked, setIsLiked] = useState(isLikedInitial)
     const [likesCount, setLikesCount] = useState(photo.likes_count || 0)
     const [isLikeAnimating, setIsLikeAnimating] = useState(false)
@@ -31,9 +34,9 @@ export function PhotoCard({ photo, onClick, isLikedInitial }: PhotoCardProps) {
         const supabase = createClient()
         const guestHash = getGuestHash()
 
-        // Insert to favorites
+        // Insert to likes
         const { error } = await supabase
-            .from('favorites')
+            .from('likes')
             .insert({ upload_id: photo.id, guest_hash: guestHash })
 
         if (error) {
@@ -66,15 +69,43 @@ export function PhotoCard({ photo, onClick, isLikedInitial }: PhotoCardProps) {
                 />
             )}
 
+            {/* Admin Controls - Always visible on mobile/desktop when admin */}
+            {isClientAdmin && (
+                <div className="absolute top-2 right-2 z-20 flex gap-2">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onHide?.()
+                        }}
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-black/60 backdrop-blur-md text-white/90 hover:text-amber-400 hover:bg-black/80 transition-colors border border-white/10"
+                        title="Gizle"
+                    >
+                        <EyeOff className="w-5 h-5" />
+                    </button>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onDelete?.()
+                        }}
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-black/60 backdrop-blur-md text-white/90 hover:text-red-500 hover:bg-black/80 transition-colors border border-white/10"
+                        title="Sil"
+                    >
+                        <Trash2 className="w-5 h-5" />
+                    </button>
+                </div>
+            )}
+
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex flex-col justify-between p-3 opacity-0 group-hover:opacity-100">
-                <div className="flex justify-end">
-                    <span className="text-xs text-white/80 font-medium bg-black/20 px-2 py-1 rounded-full backdrop-blur-sm">
+                <div className="flex justify-between items-start">
+                    <div /> {/* Spacer since admin buttons are now absolute */}
+
+                    <span className="text-xs text-white/80 font-medium bg-black/20 px-2 py-1 rounded-full backdrop-blur-sm ml-auto">
                         {formatDistanceToNow(new Date(photo.created_at), { addSuffix: true, locale: tr })}
                     </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 justify-end">
                     <button
                         onClick={handleLike}
                         className="p-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md transition-colors group/btn"

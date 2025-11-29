@@ -6,6 +6,8 @@ import { createClient } from '@/utils/supabase/client'
 import { PhotoCard } from './photo-card'
 import { Lightbox } from './lightbox'
 import { getGuestHash } from '@/utils/guest-hash'
+import { useClientMode } from '@/context/client-mode-context'
+import { toast } from 'sonner'
 
 export function GalleryGrid({ eventId }: { eventId: number }) {
     const [photos, setPhotos] = useState<any[]>([])
@@ -14,6 +16,7 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
     const [ref, inView] = useInView()
     const [lightboxIndex, setLightboxIndex] = useState(-1)
     const [likedPhotoIds, setLikedPhotoIds] = useState<Set<number>>(new Set())
+    const { isClientAdmin } = useClientMode()
 
     const supabase = createClient()
     const PAGE_SIZE = 20
@@ -23,7 +26,7 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
         const fetchLikes = async () => {
             const guestHash = getGuestHash()
             const { data } = await supabase
-                .from('favorites')
+                .from('likes')
                 .select('upload_id')
                 .eq('guest_hash', guestHash)
 
@@ -33,6 +36,67 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
         }
         fetchLikes()
     }, [])
+
+    const handleLike = async (photoId: number) => {
+        const guestHash = getGuestHash()
+        const isLiked = likedPhotoIds.has(photoId)
+
+        // Optimistic Update
+        setLikedPhotoIds(prev => {
+            const next = new Set(prev)
+            if (isLiked) next.delete(photoId)
+            else next.add(photoId)
+            return next
+        })
+
+        // Update DB
+        if (isLiked) {
+            // Unlike
+            await supabase
+                .from('likes')
+                .delete()
+                .eq('upload_id', photoId)
+                .eq('guest_hash', guestHash)
+        } else {
+            // Like
+            await supabase
+                .from('likes')
+                .insert({
+                    upload_id: photoId,
+                    guest_hash: guestHash
+                })
+        }
+    }
+
+    const handleDelete = async (photoId: number) => {
+        if (!confirm('Bu fotoğrafı silmek istediğinize emin misiniz?')) return
+
+        const { error } = await supabase
+            .from('uploads')
+            .delete()
+            .eq('id', photoId)
+
+        if (!error) {
+            setPhotos(prev => prev.filter(p => p.id !== photoId))
+            toast.success('Fotoğraf silindi')
+        } else {
+            toast.error('Silme işlemi başarısız')
+        }
+    }
+
+    const handleHide = async (photoId: number) => {
+        const { error } = await supabase
+            .from('uploads')
+            .update({ is_hidden: true })
+            .eq('id', photoId)
+
+        if (!error) {
+            setPhotos(prev => prev.filter(p => p.id !== photoId))
+            toast.success('Fotoğraf gizlendi')
+        } else {
+            toast.error('Gizleme işlemi başarısız')
+        }
+    }
 
     const loadMore = async () => {
         const from = page * PAGE_SIZE
@@ -69,6 +133,9 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
                         photo={photo}
                         onClick={() => setLightboxIndex(index)}
                         isLikedInitial={likedPhotoIds.has(photo.id)}
+                        isClientAdmin={isClientAdmin}
+                        onDelete={() => handleDelete(photo.id)}
+                        onHide={() => handleHide(photo.id)}
                     />
                 ))}
             </div>
@@ -88,10 +155,8 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
                 hasPrev={photos.length > 0}
                 hasNext={photos.length > 0}
                 isLiked={lightboxIndex >= 0 ? likedPhotoIds.has(photos[lightboxIndex].id) : false}
-                onLike={() => {
-                    // Handle like in lightbox (optional, or just reuse logic)
-                }}
+                onLike={(id) => handleLike(id)}
             />
         </>
     )
-} 
+}

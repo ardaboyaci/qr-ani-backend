@@ -6,8 +6,8 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfa
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata = {
-    title: 'QR Anı Backend',
-    description: 'Backend API for QR Anı',
+    title: 'BiKare - Düğün Fotoğraf Platformu',
+    description: 'Düğün ve organizasyonlarınız için fotoğraf paylaşım platformu',
 }
 
 export default function RootLayout({

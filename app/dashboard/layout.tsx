@@ -6,20 +6,18 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import {
     LayoutDashboard,
-    Settings,
     LogOut,
-    Menu,
-    X,
     Camera
 } from 'lucide-react'
 import { toast } from 'sonner'
+import BottomNav from '@/components/dashboard/bottom-nav'
+import FAB from '@/components/dashboard/fab'
 
 export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const pathname = usePathname()
     const router = useRouter()
     const supabase = createClient()
@@ -37,31 +35,12 @@ export default function DashboardLayout({
 
     const navigation = [
         { name: 'Etkinlikler', href: '/dashboard', icon: LayoutDashboard },
-        // Settings is usually per event, but maybe a global settings or profile?
-        // The prompt implies "Settings" in the sidebar. Let's assume it links to a general settings or maybe just the first event's settings if we had one?
-        // Actually, the prompt says "Navigation Links (Events, Settings)". 
-        // But Settings usually requires an event context in this app structure (/dashboard/[event_id]/settings).
-        // Let's keep "Events" as the main one. Maybe "Settings" here is User Settings?
-        // For now, let's stick to "Events" and maybe a placeholder for "Profile" or similar if needed.
-        // Or maybe the user meant the Event Settings? But that's inside an event.
-        // Let's just put "Events" for now as the main nav.
     ]
 
     return (
         <div className="min-h-screen bg-gray-50 flex">
-            {/* Mobile Sidebar Overlay */}
-            {isSidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-                    onClick={() => setIsSidebarOpen(false)}
-                />
-            )}
-
-            {/* Sidebar */}
-            <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#10221c] text-white transition-transform duration-300 ease-in-out
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
+            {/* Desktop Sidebar - Hidden on Mobile */}
+            <aside className="hidden md:flex flex-col w-64 bg-[#10221c] text-white fixed inset-y-0 left-0 z-50">
                 <div className="h-full flex flex-col">
                     {/* Logo */}
                     <div className="p-6 flex items-center gap-3 border-b border-white/10">
@@ -69,12 +48,6 @@ export default function DashboardLayout({
                             <Camera className="w-6 h-6 text-white" />
                         </div>
                         <span className="font-playfair text-xl font-bold">Gelin & Damat</span>
-                        <button
-                            onClick={() => setIsSidebarOpen(false)}
-                            className="ml-auto lg:hidden text-white/60 hover:text-white"
-                        >
-                            <X className="w-6 h-6" />
-                        </button>
                     </div>
 
                     {/* Navigation */}
@@ -114,23 +87,16 @@ export default function DashboardLayout({
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                {/* Mobile Header */}
-                <header className="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center gap-4">
-                    <button
-                        onClick={() => setIsSidebarOpen(true)}
-                        className="text-gray-600 hover:text-gray-900"
-                    >
-                        <Menu className="w-6 h-6" />
-                    </button>
-                    <span className="font-playfair text-lg font-bold text-gray-900">Gelin & Damat</span>
-                </header>
-
+            <div className="flex-1 flex flex-col min-w-0 md:pl-64">
                 {/* Scrollable Content Area */}
-                <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8">
                     {children}
                 </main>
             </div>
+
+            {/* Mobile Components */}
+            <BottomNav />
+            <FAB />
         </div>
     )
 }

@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Download } from 'lucide-react'
 import { GalleryGrid } from '@/components/gallery-grid'
 import { TimelineView } from '@/components/timeline-view'
 import { ClientLogin } from '@/components/client-login'
 import { HighlightsLoader } from '@/components/HighlightsLoader'
+import { LeadCaptureModal } from '@/components/lead-capture-modal'
 import { selectHighlights } from '@/lib/utils/highlightsAlgorithm'
 import { createClient } from '@/utils/supabase/client'
 
@@ -22,6 +23,7 @@ export function GalleryContainer({ eventId, coupleName, slug }: GalleryContainer
     const [activeTab, setActiveTab] = useState<Tab>('all')
     const [isAnalyzing, setIsAnalyzing] = useState(false)
     const [highlightedPhotos, setHighlightedPhotos] = useState<any[]>([])
+    const [isLeadModalOpen, setIsLeadModalOpen] = useState(false)
     const supabase = createClient()
 
     const handleHighlightsClick = async () => {
@@ -73,7 +75,7 @@ export function GalleryContainer({ eventId, coupleName, slug }: GalleryContainer
                 </div>
 
                 {/* Tabs / Filters */}
-                <div className="max-w-7xl mx-auto px-4 pb-4 overflow-x-auto no-scrollbar">
+                <div className="max-w-7xl mx-auto px-4 pb-4 overflow-x-auto no-scrollbar flex items-center justify-between gap-4">
                     <div className="flex gap-2">
                         <button
                             onClick={() => setActiveTab('all')}
@@ -103,6 +105,14 @@ export function GalleryContainer({ eventId, coupleName, slug }: GalleryContainer
                             Zaman Tüneli
                         </button>
                     </div>
+
+                    <button
+                        onClick={() => setIsLeadModalOpen(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-charcoal text-white rounded-full text-sm font-medium hover:bg-charcoal/80 transition-colors shadow-lg shadow-charcoal/10 whitespace-nowrap"
+                    >
+                        <Download className="w-4 h-4 text-gold" />
+                        <span className="hidden sm:inline">Tümünü İndir (ZIP)</span>
+                    </button>
                 </div>
             </div>
 
@@ -131,6 +141,12 @@ export function GalleryContainer({ eventId, coupleName, slug }: GalleryContainer
             <div className="py-8 flex justify-center pb-24 md:pb-8">
                 <ClientLogin eventId={eventId} />
             </div>
+
+            <LeadCaptureModal
+                isOpen={isLeadModalOpen}
+                onClose={() => setIsLeadModalOpen(false)}
+                eventId={eventId}
+            />
         </main>
     )
 }

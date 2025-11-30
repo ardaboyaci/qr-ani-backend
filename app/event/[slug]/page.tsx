@@ -19,7 +19,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
     return (
         <EventProtectionWrapper eventId={event.id} password={event.password}>
-            <main className="min-h-screen bg-[#10221c] text-white">
+            <main className="min-h-screen bg-ivory text-charcoal">
                 <EventHero event={event} />
                 <KvkkModal eventSlug={slug} />
             </main>

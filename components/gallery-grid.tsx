@@ -9,7 +9,7 @@ import { getGuestHash } from '@/utils/guest-hash'
 import { useClientMode } from '@/context/client-mode-context'
 import { toast } from 'sonner'
 
-export function GalleryGrid({ eventId }: { eventId: number }) {
+export function GalleryGrid({ eventId, staticPhotos }: { eventId: number, staticPhotos?: any[] }) {
     const [photos, setPhotos] = useState<any[]>([])
     const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState(true)
@@ -20,6 +20,14 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
 
     const supabase = createClient()
     const PAGE_SIZE = 20
+
+    // Initialize with static photos if provided
+    useEffect(() => {
+        if (staticPhotos) {
+            setPhotos(staticPhotos)
+            setHasMore(false)
+        }
+    }, [staticPhotos])
 
     // Fetch user likes to show initial state
     useEffect(() => {
@@ -99,6 +107,8 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
     }
 
     const loadMore = async () => {
+        if (staticPhotos) return // Don't load more if using static photos
+
         const from = page * PAGE_SIZE
         const to = from + PAGE_SIZE - 1
 
@@ -119,10 +129,10 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
     }
 
     useEffect(() => {
-        if (inView && hasMore) {
+        if (inView && hasMore && !staticPhotos) {
             loadMore()
         }
-    }, [inView, hasMore])
+    }, [inView, hasMore, staticPhotos])
 
     return (
         <>

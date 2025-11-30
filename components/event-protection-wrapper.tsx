@@ -21,8 +21,8 @@ export function EventProtectionWrapper({ children, eventId, password }: EventPro
             return
         }
 
-        // Check localStorage
-        const unlocked = localStorage.getItem(`event_unlocked_${eventId}`)
+        // Check sessionStorage
+        const unlocked = sessionStorage.getItem(`event_unlocked_${eventId}`)
         if (unlocked === 'true') {
             setIsUnlocked(true)
         }
@@ -30,7 +30,7 @@ export function EventProtectionWrapper({ children, eventId, password }: EventPro
     }, [eventId, password])
 
     const handleUnlock = () => {
-        localStorage.setItem(`event_unlocked_${eventId}`, 'true')
+        sessionStorage.setItem(`event_unlocked_${eventId}`, 'true')
         setIsUnlocked(true)
     }
 

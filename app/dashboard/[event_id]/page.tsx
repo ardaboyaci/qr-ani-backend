@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { notFound } from 'next/navigation'
 import { AnalyticsClient } from './analytics-client'
-import { Users, Image as ImageIcon, Heart } from 'lucide-react'
+import { Users, Image as ImageIcon, Heart, Tv, PlayCircle } from 'lucide-react'
 
 export default async function EventDashboardPage({ params }: { params: Promise<{ event_id: string }> }) {
     const { event_id } = await params
@@ -54,6 +54,35 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
             <div>
                 <h1 className="text-3xl font-playfair font-bold text-gray-900">{event.couple_name}</h1>
                 <p className="text-gray-500 mt-1">Etkinlik Analizleri ve Canlı Akış</p>
+            </div>
+
+            {/* Live Slideshow Card */}
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-white/20 transition-colors"></div>
+
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                    <div className="flex items-start gap-4">
+                        <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <Tv className="w-8 h-8 text-white" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold mb-1">Canlı Sunum Modu</h2>
+                            <p className="text-indigo-100 max-w-md">
+                                Salondaki dev ekran veya projeksiyon için optimize edilmiş tam ekran görünümü.
+                            </p>
+                        </div>
+                    </div>
+
+                    <a
+                        href={`/event/${event.slug}/slideshow`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-3 bg-white text-indigo-600 rounded-xl font-bold hover:bg-indigo-50 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap"
+                    >
+                        <PlayCircle className="w-5 h-5" />
+                        Sunumu Başlat
+                    </a>
+                </div>
             </div>
 
             {/* Metric Cards */}

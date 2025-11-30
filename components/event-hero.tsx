@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { MapPin, Camera, ArrowRight } from 'lucide-react'
+import { MapPin, Camera, ArrowRight, Tv } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { UploadModal } from './upload-modal'
 
@@ -89,6 +89,14 @@ export function EventHero({ event }: { event: any }) {
                     >
                         <span>Galeriyi Gözat</span>
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+
+                    <Link
+                        href={`/event/${event.slug}/slideshow`}
+                        className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-all flex items-center justify-center gap-2 group"
+                    >
+                        <Tv className="w-5 h-5" />
+                        <span>Slayt İzle</span>
                     </Link>
                 </motion.div>
             </div>

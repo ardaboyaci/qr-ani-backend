@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { Lock, X, Loader2 } from 'lucide-react'
 
 interface ClientLoginProps {
-    eventId: string
+    eventId: number
 }
 
 export function ClientLogin({ eventId }: ClientLoginProps) {

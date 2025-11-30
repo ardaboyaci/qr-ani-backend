@@ -116,16 +116,60 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
         setIsProcessing(false)
     }
 
+    const handleDownloadAll = async () => {
+        setIsProcessing(true)
+        const zip = new JSZip()
+        const folder = zip.folder("photos")
+        let successCount = 0
+
+        try {
+            toast.info('Fotoğraflar hazırlanıyor...')
+
+            // Fetch ALL photos
+            const { data: allPhotos, error } = await supabase
+                .from('uploads')
+                .select('*')
+                .eq('event_id', eventId)
+                .order('created_at', { ascending: false })
+
+            if (error || !allPhotos) throw new Error('Fotoğraflar alınamadı')
+
+            toast.info(`${allPhotos.length} fotoğraf indirilecek. Bu işlem biraz sürebilir.`)
+
+            // Process in chunks of 5
+            const chunkSize = 5
+            for (let i = 0; i < allPhotos.length; i += chunkSize) {
+                const chunk = allPhotos.slice(i, i + chunkSize)
+                await Promise.all(chunk.map(async (upload) => {
+                    try {
+                        const response = await fetch(upload.file_url)
+                        const blob = await response.blob()
+                        const ext = blob.type.split('/')[1] || 'jpg'
+                        const fileName = `photo-${upload.id}.${ext}`
+                        folder?.file(fileName, blob)
+                        successCount++
+                    } catch (e) {
+                        console.error(`Failed to download ${upload.id}`, e)
+                    }
+                }))
+            }
+
+            const content = await zip.generateAsync({ type: "blob" })
+            saveAs(content, `event-${eventId}-archive.zip`)
+            toast.success(`${successCount} fotoğraf başarıyla indirildi`)
+        } catch (error) {
+            console.error(error)
+            toast.error('İndirme sırasında hata oluştu')
+        } finally {
+            setIsProcessing(false)
+        }
+    }
+
     const handleBulkDelete = async () => {
         if (!confirm('Seçilenleri silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) return
 
         setIsProcessing(true)
         const ids = Array.from(selectedIds)
-
-        // Delete from Storage first (ideally) but RLS might block or we need file paths.
-        // For simplicity, let's just delete from DB and rely on Supabase triggers or manual cleanup if needed,
-        // OR fetch paths and delete.
-        // Let's delete from DB.
 
         const { error } = await supabase
             .from('uploads')
@@ -144,6 +188,21 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
 
     return (
         <div className="relative pb-24">
+            <div className="flex justify-end mb-6">
+                <button
+                    onClick={handleDownloadAll}
+                    disabled={isProcessing}
+                    className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                >
+                    {isProcessing ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                        <Download className="w-4 h-4" />
+                    )}
+                    <span>{isProcessing ? 'Zipleniyor...' : 'Tümünü İndir (ZIP)'}</span>
+                </button>
+            </div>
+
             <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
                 {uploads.map((upload) => (
                     <div

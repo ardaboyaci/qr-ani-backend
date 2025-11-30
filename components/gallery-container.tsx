@@ -19,14 +19,14 @@ export function GalleryContainer({ eventId, coupleName, slug }: GalleryContainer
     const [activeTab, setActiveTab] = useState<Tab>('all')
 
     return (
-        <main className="min-h-screen bg-[#10221c]">
+        <main className="min-h-screen bg-ivory">
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-[#10221c]/80 backdrop-blur-md border-b border-white/10">
+            <div className="sticky top-0 z-40 bg-ivory/80 backdrop-blur-md border-b border-gold/20">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-                    <Link href={`/event/${slug}`} className="text-white/70 hover:text-white transition-colors">
+                    <Link href={`/event/${slug}`} className="text-charcoal/70 hover:text-gold transition-colors">
                         <ArrowLeft className="w-6 h-6" />
                     </Link>
-                    <h1 className="font-playfair text-xl text-white font-semibold">{coupleName}</h1>
+                    <h1 className="font-playfair text-xl text-charcoal font-semibold">{coupleName}</h1>
                     <div className="w-6" />
                 </div>
 
@@ -35,18 +35,18 @@ export function GalleryContainer({ eventId, coupleName, slug }: GalleryContainer
                     <div className="flex gap-2">
                         <button
                             onClick={() => setActiveTab('all')}
-                            className={`px-4 py-1.5 rounded-full font-medium text-sm whitespace-nowrap transition-colors ${activeTab === 'all'
-                                    ? 'bg-white text-emerald-900'
-                                    : 'bg-white/10 text-white/70 hover:bg-white/20'
+                            className={`px-6 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-all duration-300 border ${activeTab === 'all'
+                                ? 'bg-gold text-white border-gold shadow-lg shadow-gold/20'
+                                : 'bg-white text-charcoal/70 border-bronze/20 hover:border-gold/50 hover:text-gold'
                                 }`}
                         >
                             Tüm Anılar
                         </button>
                         <button
                             onClick={() => setActiveTab('timeline')}
-                            className={`px-4 py-1.5 rounded-full font-medium text-sm whitespace-nowrap transition-colors ${activeTab === 'timeline'
-                                    ? 'bg-white text-emerald-900'
-                                    : 'bg-white/10 text-white/70 hover:bg-white/20'
+                            className={`px-6 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-all duration-300 border ${activeTab === 'timeline'
+                                ? 'bg-gold text-white border-gold shadow-lg shadow-gold/20'
+                                : 'bg-white text-charcoal/70 border-bronze/20 hover:border-gold/50 hover:text-gold'
                                 }`}
                         >
                             Zaman Tüneli

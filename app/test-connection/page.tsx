@@ -17,10 +17,10 @@ export default async function TestConnectionPage() {
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Supabase Connection Test</h1>
 
                 {/* Connection Status */}
-                <div className={`p-6 rounded-xl border mb-8 ${isConnected ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                <div className={`p-6 rounded-xl border mb-8 ${isConnected ? 'bg-gold/10 border-gold/20' : 'bg-red-50 border-red-200'}`}>
                     <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
-                        <h2 className={`font-semibold text-lg ${isConnected ? 'text-green-900' : 'text-red-900'}`}>
+                        <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-gold' : 'bg-red-500'}`} />
+                        <h2 className={`font-semibold text-lg ${isConnected ? 'text-gold-dark' : 'text-red-900'}`}>
                             Status: {isConnected ? 'Connected Successfully' : 'Connection Failed'}
                         </h2>
                     </div>

@@ -68,7 +68,7 @@ export function CreateEventModal({ isOpen, onClose, userId }: CreateEventModalPr
                             required
                             value={coupleName}
                             onChange={(e) => setCoupleName(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
                             placeholder="Ayşe & Ahmet"
                         />
                     </div>
@@ -80,7 +80,7 @@ export function CreateEventModal({ isOpen, onClose, userId }: CreateEventModalPr
                             required
                             value={weddingDate}
                             onChange={(e) => setWeddingDate(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
                         />
                     </div>
 
@@ -91,7 +91,7 @@ export function CreateEventModal({ isOpen, onClose, userId }: CreateEventModalPr
                             required
                             value={venueName}
                             onChange={(e) => setVenueName(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
                             placeholder="Grand Hotel"
                         />
                     </div>
@@ -104,7 +104,7 @@ export function CreateEventModal({ isOpen, onClose, userId }: CreateEventModalPr
                                 type="text"
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
-                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
                                 placeholder="ayse-ahmet"
                             />
                         </div>
@@ -113,7 +113,7 @@ export function CreateEventModal({ isOpen, onClose, userId }: CreateEventModalPr
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-gold text-charcoal rounded-xl font-medium hover:bg-gold-dark transition-colors flex items-center justify-center gap-2"
                     >
                         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Oluştur'}
                     </button>

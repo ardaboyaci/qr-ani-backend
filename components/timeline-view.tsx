@@ -136,14 +136,14 @@ export function TimelineView({ eventId }: TimelineViewProps) {
     if (loading) {
         return (
             <div className="py-12 flex justify-center">
-                <div className="w-8 h-8 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+                <div className="w-8 h-8 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
             </div>
         )
     }
 
     if (groups.length === 0) {
         return (
-            <div className="py-12 text-center text-white/50">
+            <div className="py-12 text-center text-charcoal/50">
                 <p>Henüz akış başlamadı</p>
             </div>
         )
@@ -155,7 +155,7 @@ export function TimelineView({ eventId }: TimelineViewProps) {
                 <div key={group.hour} className="relative">
                     {/* Sticky Header */}
                     <div className="sticky top-20 z-30 px-4 py-2 mb-4">
-                        <span className="inline-block px-4 py-1 rounded-full bg-emerald-900/80 backdrop-blur-md text-emerald-100 text-sm font-medium border border-emerald-500/20">
+                        <span className="inline-block px-4 py-1 rounded-full bg-ivory/80 backdrop-blur-md text-gold-dark text-sm font-medium border border-gold/20 shadow-sm">
                             Saat {group.hour}
                         </span>
                     </div>

@@ -38,16 +38,16 @@ export default function DashboardLayout({
     ]
 
     return (
-        <div className="min-h-screen bg-gray-50 flex">
+        <div className="min-h-screen bg-charcoal flex">
             {/* Desktop Sidebar - Hidden on Mobile */}
-            <aside className="hidden md:flex flex-col w-64 bg-[#10221c] text-white fixed inset-y-0 left-0 z-50">
+            <aside className="hidden md:flex flex-col w-64 bg-charcoal text-white fixed inset-y-0 left-0 z-50 border-r border-gold/10">
                 <div className="h-full flex flex-col">
                     {/* Logo */}
-                    <div className="p-6 flex items-center gap-3 border-b border-white/10">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                            <Camera className="w-6 h-6 text-white" />
+                    <div className="p-6 flex items-center gap-3 border-b border-gold/10">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-lg shadow-gold/20">
+                            <Camera className="w-6 h-6 text-charcoal" />
                         </div>
-                        <span className="font-playfair text-xl font-bold">Gelin & Damat</span>
+                        <span className="font-playfair text-xl font-bold text-gold">BiKare Anı</span>
                     </div>
 
                     {/* Navigation */}
@@ -59,14 +59,14 @@ export default function DashboardLayout({
                                     key={item.name}
                                     href={item.href}
                                     className={`
-                    flex items-center gap-3 px-4 py-3 rounded-xl transition-colors
+                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300
                     ${isActive
-                                            ? 'bg-emerald-600 text-white'
-                                            : 'text-white/70 hover:bg-white/10 hover:text-white'
+                                            ? 'bg-gradient-to-r from-gold to-gold-dark text-charcoal font-medium shadow-lg shadow-gold/20'
+                                            : 'text-gray-400 hover:bg-white/5 hover:text-gold'
                                         }
                   `}
                                 >
-                                    <item.icon className="w-5 h-5" />
+                                    <item.icon className={`w-5 h-5 ${isActive ? 'text-charcoal' : 'text-gray-500 group-hover:text-gold'}`} />
                                     <span className="font-medium">{item.name}</span>
                                 </Link>
                             )
@@ -74,7 +74,7 @@ export default function DashboardLayout({
                     </nav>
 
                     {/* User Profile / Sign Out */}
-                    <div className="p-4 border-t border-white/10">
+                    <div className="p-4 border-t border-gold/10">
                         <button
                             onClick={handleSignOut}
                             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors"

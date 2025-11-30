@@ -1,5 +1,8 @@
 {
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/[event_id]/gallery/page": "app/dashboard/[event_id]/gallery/page.js",
-  "/dashboard/[event_id]/page": "app/dashboard/[event_id]/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/dashboard/[event_id]/settings/page": "app/dashboard/[event_id]/settings/page.js",
+  "/dashboard/[event_id]/page": "app/dashboard/[event_id]/page.js",
+  "/dashboard/[event_id]/gallery/page": "app/dashboard/[event_id]/gallery/page.js"
 }

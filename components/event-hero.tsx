@@ -49,7 +49,7 @@ export function EventHero({ event }: { event: any }) {
                         {event.couple_name}
                     </h1>
 
-                    <div className="text-emerald-400/80 font-mono text-lg md:text-xl tracking-widest mb-8">
+                    <div className="text-gold/80 font-mono text-lg md:text-xl tracking-widest mb-8">
                         {timeLeft}
                     </div>
 
@@ -74,7 +74,7 @@ export function EventHero({ event }: { event: any }) {
                 >
                     <button
                         onClick={() => setIsUploadOpen(true)}
-                        className="w-full sm:w-auto group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-xl font-semibold text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all hover:scale-105 active:scale-95"
+                        className="w-full sm:w-auto group relative px-8 py-4 bg-gradient-to-r from-gold to-gold-dark rounded-xl font-semibold text-charcoal shadow-lg shadow-gold/20 hover:shadow-gold/40 transition-all hover:scale-105 active:scale-95"
                     >
                         <div className="absolute inset-0 rounded-xl bg-white/20 animate-pulse" />
                         <div className="relative flex items-center justify-center gap-3">

@@ -22,11 +22,11 @@ export default function BottomNav() {
                         <Link
                             key={item.name}
                             href={item.href}
-                            className={`inline-flex flex-col items-center justify-center px-5 hover:bg-white/5 transition-colors group ${isActive ? 'text-emerald-500' : 'text-gray-400'
+                            className={`inline-flex flex-col items-center justify-center px-5 hover:bg-white/5 transition-colors group ${isActive ? 'text-gold' : 'text-gray-400'
                                 }`}
                         >
                             <item.icon
-                                className={`w-6 h-6 mb-1 transition-colors ${isActive ? 'text-emerald-500' : 'text-gray-400 group-hover:text-gray-300'
+                                className={`w-6 h-6 mb-1 transition-colors ${isActive ? 'text-gold' : 'text-gray-400 group-hover:text-gray-300'
                                     }`}
                             />
                             <span className="text-xs font-medium">{item.name}</span>

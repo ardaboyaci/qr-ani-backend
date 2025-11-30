@@ -192,7 +192,7 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
                 <button
                     onClick={handleDownloadAll}
                     disabled={isProcessing}
-                    className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-gold text-charcoal rounded-lg hover:bg-gold-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md hover:shadow-gold/20"
                 >
                     {isProcessing ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -207,7 +207,7 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
                 {uploads.map((upload) => (
                     <div
                         key={upload.id}
-                        className={`relative group break-inside-avoid rounded-xl overflow-hidden cursor-pointer transition-all ${selectedIds.has(upload.id) ? 'ring-4 ring-emerald-500' : ''}`}
+                        className={`relative group break-inside-avoid rounded-xl overflow-hidden cursor-pointer transition-all ${selectedIds.has(upload.id) ? 'ring-4 ring-gold' : ''}`}
                         onClick={() => toggleSelection(upload.id)}
                     >
                         {upload.file_url.match(/\.(mp4|webm)$/i) ? (
@@ -223,7 +223,7 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
 
                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             {selectedIds.has(upload.id) ? (
-                                <CheckCircle2 className="w-12 h-12 text-emerald-500 fill-white" />
+                                <CheckCircle2 className="w-12 h-12 text-gold fill-white" />
                             ) : (
                                 <Circle className="w-12 h-12 text-white" />
                             )}
@@ -240,7 +240,7 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
 
             {loading && (
                 <div className="flex justify-center py-8">
-                    <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                    <Loader2 className="w-8 h-8 animate-spin text-gold" />
                 </div>
             )}
 
@@ -255,7 +255,7 @@ export function AdminGalleryGrid({ eventId }: { eventId: number }) {
                     <button
                         onClick={handleBulkDownload}
                         disabled={isProcessing}
-                        className="flex items-center gap-2 text-gray-600 hover:text-emerald-600 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-2 text-gray-600 hover:text-gold transition-colors disabled:opacity-50"
                         title="İndir (Max 50)"
                     >
                         <Download className="w-5 h-5" />

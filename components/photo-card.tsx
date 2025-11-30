@@ -50,7 +50,7 @@ export function PhotoCard({ photo, onClick, isLikedInitial, isClientAdmin, onDel
 
     return (
         <div
-            className="relative break-inside-avoid mb-4 group cursor-pointer rounded-lg overflow-hidden bg-gray-900"
+            className="relative break-inside-avoid mb-4 group cursor-pointer rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all duration-500"
             onClick={onClick}
         >
             {(photo.media_type === 'video' || photo.file_url.endsWith('.mp4')) ? (

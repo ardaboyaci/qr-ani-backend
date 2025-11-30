@@ -17,8 +17,8 @@ export default async function GalleryManagerPage({ params }: { params: Promise<{
     return (
         <div className="h-[calc(100vh-4rem)] flex flex-col">
             <div className="mb-6">
-                <h1 className="text-3xl font-playfair font-bold text-gray-900">Galeri Yönetimi</h1>
-                <p className="text-gray-500 mt-1">Fotoğrafları seçin, indirin veya gizleyin.</p>
+                <h1 className="text-3xl font-playfair font-bold text-white">Galeri Yönetimi</h1>
+                <p className="text-gray-400 mt-1">Fotoğrafları seçin, indirin veya gizleyin.</p>
             </div>
 
             <div className="flex-1 min-h-0">

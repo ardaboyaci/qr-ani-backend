@@ -74,7 +74,7 @@ export function AnalyticsClient({ eventId, initialChartData, initialUploads }: A
                                 cursor={{ fill: '#f3f4f6' }}
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                             />
-                            <Bar dataKey="count" fill="#10b981" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="count" fill="#D4AF37" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -84,8 +84,8 @@ export function AnalyticsClient({ eventId, initialChartData, initialUploads }: A
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col h-[400px]">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <span className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-gold"></span>
                     </span>
                     Canlı Akış
                 </h3>

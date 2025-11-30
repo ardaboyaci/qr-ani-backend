@@ -189,14 +189,14 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                             <div className="p-6 overflow-y-auto flex-1">
                                 {files.length === 0 ? (
                                     <div
-                                        className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${isDragging ? 'border-emerald-500 bg-emerald-50' : 'border-gray-300 hover:border-emerald-400'}`}
+                                        className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${isDragging ? 'border-gold bg-gold/5' : 'border-gray-300 hover:border-gold'}`}
                                         onDragOver={e => { e.preventDefault(); setIsDragging(true) }}
                                         onDragLeave={() => setIsDragging(false)}
                                         onDrop={handleDrop}
                                         onClick={() => fileInputRef.current?.click()}
                                     >
-                                        <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <Upload className="w-8 h-8 text-emerald-600" />
+                                        <div className="bg-gold/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Upload className="w-8 h-8 text-gold" />
                                         </div>
                                         <p className="text-gray-900 font-medium mb-1">Fotoğraf veya Video Seç</p>
                                         <p className="text-gray-500 text-sm">veya buraya sürükle</p>
@@ -222,7 +222,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                                         ))}
                                         <button
                                             onClick={() => fileInputRef.current?.click()}
-                                            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center hover:border-emerald-400 hover:bg-emerald-50 transition-colors"
+                                            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center hover:border-gold hover:bg-gold/5 transition-colors"
                                         >
                                             <Upload className="w-6 h-6 text-gray-400" />
                                         </button>
@@ -248,7 +248,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                                         </div>
                                         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-emerald-500 transition-all duration-300"
+                                                className="h-full bg-gold transition-all duration-300"
                                                 style={{ width: `${progress}%` }}
                                             />
                                         </div>
@@ -257,7 +257,7 @@ export function UploadModal({ isOpen, onClose, eventId, eventSlug, coupleName }:
                                     <button
                                         onClick={handleUpload}
                                         disabled={files.length === 0}
-                                        className="w-full bg-emerald-600 text-white font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-700 transition-colors"
+                                        className="w-full bg-gold text-charcoal font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold-dark transition-colors"
                                     >
                                         {files.length > 0 ? `${files.length} Dosyayı Yükle` : 'Dosya Seçin'}
                                     </button>

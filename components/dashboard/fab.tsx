@@ -26,7 +26,7 @@ export default function FAB() {
         <>
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="fixed bottom-20 right-4 z-50 p-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg hover:shadow-xl transition-all active:scale-95 md:hidden"
+                className="fixed bottom-20 right-4 z-50 p-4 rounded-full bg-gradient-to-r from-gold to-gold-dark text-charcoal shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all active:scale-95 md:hidden"
                 aria-label="Create New Event"
             >
                 <Plus className="w-6 h-6" />

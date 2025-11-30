@@ -151,8 +151,8 @@ export function CommentSection({ uploadId }: CommentSectionProps) {
                         <div key={comment.id} className={`flex flex-col ${comment.is_couple_reply ? 'items-end' : 'items-start'}`}>
                             <div
                                 className={`max-w-[85%] rounded-2xl px-4 py-2 ${comment.is_couple_reply
-                                        ? 'bg-gradient-to-r from-amber-500/20 to-yellow-600/20 border border-amber-500/30 text-amber-100'
-                                        : 'bg-white/10 text-white border border-white/5'
+                                    ? 'bg-gradient-to-r from-amber-500/20 to-yellow-600/20 border border-amber-500/30 text-amber-100'
+                                    : 'bg-white/10 text-white border border-white/5'
                                     }`}
                             >
                                 <div className="flex items-center justify-between gap-2 mb-1">
@@ -205,7 +205,7 @@ export function CommentSection({ uploadId }: CommentSectionProps) {
                     <button
                         type="submit"
                         disabled={sending || !newComment.trim()}
-                        className="p-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="p-2 bg-gold text-charcoal rounded-full hover:bg-gold-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         <Send className="w-4 h-4" />
                     </button>

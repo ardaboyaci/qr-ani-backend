@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, LayoutDashboard, Camera } from 'lucide-react'
+import { Camera, ArrowRight, Heart, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function LandingPage() {
@@ -21,91 +21,95 @@ export default function LandingPage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col md:flex-row">
-            {/* Section A: Guest & Couple Access (Left/Top) */}
-            <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex-1 flex flex-col items-center justify-center p-8 md:p-16 bg-gradient-to-br from-emerald-50 to-teal-100 text-center relative overflow-hidden"
-            >
-                {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-5 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-                    <div className="absolute -bottom-8 left-20 w-64 h-64 bg-green-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-                </div>
+        <main className="min-h-screen flex flex-col md:flex-row">
+            {/* Left Side - Guest/Couple Entrance */}
+            <div className="w-full md:w-1/2 min-h-[60vh] md:min-h-screen bg-ivory relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-5" />
 
-                <div className="relative z-10 max-w-md w-full">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="relative z-10 max-w-md w-full"
+                >
                     <div className="mb-8 flex justify-center">
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg transform rotate-3">
-                            <Camera className="w-8 h-8 text-white" />
+                        <div className="w-20 h-20 bg-gold/10 rounded-full flex items-center justify-center mb-4 border border-gold/20">
+                            <Heart className="w-10 h-10 text-gold" />
                         </div>
                     </div>
 
-                    <h1 className="text-4xl md:text-5xl font-playfair font-bold text-gray-900 mb-4">
+                    <h1 className="font-playfair text-5xl md:text-6xl font-bold text-charcoal mb-4 tracking-tight">
                         BiKare Anı
                     </h1>
-                    <p className="text-lg text-gray-600 mb-8 font-inter">
-                        Düğün kodunu gir, anıları keşfet.
+                    <p className="text-bronze text-lg mb-12 font-light">
+                        En özel anlarınızı ölümsüzleştirin.
                     </p>
 
-                    <form onSubmit={handleEventSubmit} className="w-full space-y-4">
-                        <div className="relative">
+                    <form onSubmit={handleEventSubmit} className="space-y-6">
+                        <div className="relative group">
                             <input
                                 type="text"
                                 value={eventCode}
                                 onChange={(e) => setEventCode(e.target.value)}
-                                placeholder="Örn: ayse-ali"
-                                className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-lg placeholder:text-gray-400 shadow-sm"
+                                placeholder="Düğün kodunu girin"
+                                className="w-full px-6 py-4 rounded-2xl border border-bronze/30 bg-white/50 text-charcoal focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all outline-none text-lg placeholder:text-gray-400 shadow-sm backdrop-blur-sm"
                             />
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gold opacity-50 group-focus-within:opacity-100 transition-opacity">
+                                <Sparkles className="w-5 h-5" />
+                            </div>
                         </div>
+
                         <button
                             type="submit"
-                            className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2"
+                            className="w-full py-4 rounded-2xl bg-gradient-to-r from-gold to-gold-light text-charcoal font-medium shadow-lg shadow-gold/40 hover:shadow-gold/60 hover:scale-[1.02] transition-all duration-300 text-lg flex items-center justify-center gap-2"
                         >
-                            Galeriye Git
+                            <span>Galeriye Git</span>
                             <ArrowRight className="w-5 h-5" />
                         </button>
                     </form>
-                </div>
-            </motion.div>
+                </motion.div>
+            </div>
 
-            {/* Section B: Photographer/Partner Access (Right/Bottom) */}
-            <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="flex-1 flex flex-col items-center justify-center p-8 md:p-16 bg-[#10221c] text-center relative overflow-hidden"
-            >
-                <div className="relative z-10 max-w-md w-full">
-                    <h2 className="text-3xl md:text-4xl font-playfair font-bold text-white mb-4">
+            {/* Right Side - Photographer/Partner Entrance */}
+            <div className="w-full md:w-1/2 min-h-[40vh] md:min-h-screen bg-charcoal relative flex flex-col items-center justify-center p-8 text-center border-t md:border-t-0 md:border-l border-gold/10">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent opacity-40" />
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="relative z-10 max-w-md w-full"
+                >
+                    <div className="mb-6 flex justify-center">
+                        <div className="p-4 bg-white/5 rounded-2xl border border-gold/10 backdrop-blur-sm">
+                            <Camera className="w-8 h-8 text-gold" />
+                        </div>
+                    </div>
+
+                    <h2 className="font-playfair text-3xl font-bold text-white mb-4">
                         Fotoğrafçılar için BiKare
                     </h2>
-                    <p className="text-lg text-gray-400 mb-8 font-inter">
-                        Etkinliklerinizi yönetin, QR kodlarınızı oluşturun ve işinizi büyütün.
+                    <p className="text-gray-400 mb-8 font-light">
+                        İşinizi büyütün, çiftlerinize premium bir deneyim sunun.
                     </p>
 
-                    <div className="space-y-4 w-full">
+                    <div className="space-y-4">
                         <Link
                             href="/dashboard"
-                            className="block w-full py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold text-lg transition-all border border-white/10 backdrop-blur-sm flex items-center justify-center gap-2 group"
+                            className="block w-full py-4 rounded-2xl bg-white/5 border border-gold/20 text-gold hover:bg-gold/10 transition-all duration-300 font-medium backdrop-blur-sm hover:border-gold/40"
                         >
-                            <LayoutDashboard className="w-5 h-5 text-emerald-400 group-hover:text-emerald-300 transition-colors" />
                             Yönetici Paneli
                         </Link>
 
-                        <div className="pt-4">
-                            <Link
-                                href="/auth/signup"
-                                className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors hover:underline underline-offset-4"
-                            >
-                                Partnerimiz olun
-                            </Link>
-                        </div>
+                        <Link
+                            href="/auth/signup"
+                            className="block w-full py-4 text-gray-400 hover:text-white transition-colors text-sm font-light"
+                        >
+                            Partnerimiz olun
+                        </Link>
                     </div>
-                </div>
-            </motion.div>
-        </div>
+                </motion.div>
+            </div>
+        </main>
     )
 }

@@ -37,8 +37,8 @@ export function KvkkModal({ eventSlug }: { eventSlug: string }) {
                         className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl"
                     >
                         <div className="flex flex-col items-center text-center">
-                            <div className="bg-emerald-100 p-3 rounded-full mb-4">
-                                <Shield className="w-8 h-8 text-emerald-600" />
+                            <div className="bg-gold/10 p-3 rounded-full mb-4">
+                                <Shield className="w-8 h-8 text-gold" />
                             </div>
                             <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-2">
                                 Anılarınız Güvende 🔒
@@ -51,13 +51,13 @@ export function KvkkModal({ eventSlug }: { eventSlug: string }) {
                                 <label className="flex items-start gap-3 cursor-pointer">
                                     <input
                                         type="checkbox"
-                                        className="mt-1 w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
+                                        className="mt-1 w-4 h-4 text-gold rounded border-gray-300 focus:ring-gold"
                                         checked={accepted}
                                         onChange={(e) => setAccepted(e.target.checked)}
                                     />
                                     <span className="text-sm text-gray-700">
                                         Fotoğraflarımın etkinlik sahibiyle paylaşılmasını ve{' '}
-                                        <Link href="/privacy" target="_blank" className="text-emerald-600 underline">
+                                        <Link href="/privacy" target="_blank" className="text-gold underline">
                                             Gizlilik Politikası
                                         </Link>
                                         'nı kabul ediyorum.
@@ -68,7 +68,7 @@ export function KvkkModal({ eventSlug }: { eventSlug: string }) {
                             <button
                                 onClick={handleAccept}
                                 disabled={!accepted}
-                                className="w-full bg-emerald-600 text-white font-semibold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-700 transition-colors"
+                                className="w-full bg-gold text-charcoal font-semibold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold-dark transition-colors"
                             >
                                 Kabul Et & Devam Et
                             </button>

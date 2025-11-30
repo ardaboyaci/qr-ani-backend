@@ -142,7 +142,7 @@ export function GalleryGrid({ eventId }: { eventId: number }) {
 
             {hasMore && (
                 <div ref={ref} className="py-8 flex justify-center">
-                    <div className="w-8 h-8 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+                    <div className="w-8 h-8 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
                 </div>
             )}
 

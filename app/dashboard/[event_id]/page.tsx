@@ -52,22 +52,22 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-playfair font-bold text-gray-900">{event.couple_name}</h1>
-                <p className="text-gray-500 mt-1">Etkinlik Analizleri ve Canlı Akış</p>
+                <h1 className="text-3xl font-playfair font-bold text-white">{event.couple_name}</h1>
+                <p className="text-gray-400 mt-1">Etkinlik Analizleri ve Canlı Akış</p>
             </div>
 
             {/* Live Slideshow Card */}
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-white/20 transition-colors"></div>
+            <div className="bg-gradient-to-r from-gold via-bronze to-gold-dark rounded-2xl p-6 text-charcoal shadow-2xl shadow-gold/20 relative overflow-hidden group border border-gold/20">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-white/30 transition-colors"></div>
 
                 <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                     <div className="flex items-start gap-4">
-                        <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                            <Tv className="w-8 h-8 text-white" />
+                        <div className="p-3 bg-charcoal/10 rounded-xl backdrop-blur-sm border border-charcoal/10">
+                            <Tv className="w-8 h-8 text-charcoal" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold mb-1">Canlı Sunum Modu</h2>
-                            <p className="text-indigo-100 max-w-md">
+                            <h2 className="text-xl font-bold mb-1 text-charcoal">Canlı Sunum Modu</h2>
+                            <p className="text-charcoal/80 max-w-md font-medium">
                                 Salondaki dev ekran veya projeksiyon için optimize edilmiş tam ekran görünümü.
                             </p>
                         </div>
@@ -77,7 +77,7 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
                         href={`/event/${event.slug}/slideshow`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-6 py-3 bg-white text-indigo-600 rounded-xl font-bold hover:bg-indigo-50 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap"
+                        className="px-6 py-3 bg-charcoal text-gold rounded-xl font-bold hover:bg-charcoal/90 transition-colors shadow-lg flex items-center gap-2 whitespace-nowrap border border-gold/20"
                     >
                         <PlayCircle className="w-5 h-5" />
                         Sunumu Başlat
@@ -87,38 +87,38 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
 
             {/* Metric Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-gold/20 shadow-lg hover:shadow-gold/10 transition-all duration-300">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                        <div className="p-3 bg-gold/10 text-gold rounded-xl border border-gold/10">
                             <ImageIcon className="w-6 h-6" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Toplam Medya</p>
-                            <h3 className="text-2xl font-bold text-gray-900">{uploadsCount || 0}</h3>
+                            <p className="text-sm font-medium text-gray-400">Toplam Medya</p>
+                            <h3 className="text-2xl font-bold text-white">{uploadsCount || 0}</h3>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-gold/20 shadow-lg hover:shadow-gold/10 transition-all duration-300">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
+                        <div className="p-3 bg-gold/10 text-gold rounded-xl border border-gold/10">
                             <Users className="w-6 h-6" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Tekil Misafir</p>
-                            <h3 className="text-2xl font-bold text-gray-900">{uniqueGuests}</h3>
+                            <p className="text-sm font-medium text-gray-400">Tekil Misafir</p>
+                            <h3 className="text-2xl font-bold text-white">{uniqueGuests}</h3>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-gold/20 shadow-lg hover:shadow-gold/10 transition-all duration-300">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-red-50 text-red-600 rounded-lg">
+                        <div className="p-3 bg-gold/10 text-gold rounded-xl border border-gold/10">
                             <Heart className="w-6 h-6" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Toplam Beğeni</p>
-                            <h3 className="text-2xl font-bold text-gray-900">{totalLikes}</h3>
+                            <p className="text-sm font-medium text-gray-400">Toplam Beğeni</p>
+                            <h3 className="text-2xl font-bold text-white">{totalLikes}</h3>
                         </div>
                     </div>
                 </div>
@@ -127,7 +127,7 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
             <AnalyticsClient
                 eventId={event.id}
                 initialChartData={chartData}
-                initialUploads={uploads?.slice(0, 10) || []} // Show last 10 uploads initially
+                initialUploads={uploads?.slice(0, 10) || []}
             />
         </div>
     )

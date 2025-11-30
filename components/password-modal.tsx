@@ -45,7 +45,7 @@ export function PasswordModal({ isOpen, correctPassword, onUnlock }: PasswordMod
                             setError(false)
                         }}
                         className={`w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 transition-all text-center text-lg tracking-widest
-              ${error ? 'border-red-500 focus:ring-red-500' : 'border-white/10 focus:ring-emerald-500'}
+              ${error ? 'border-red-500 focus:ring-red-500' : 'border-white/10 focus:ring-gold'}
             `}
                         placeholder="••••"
                         autoFocus
@@ -53,7 +53,7 @@ export function PasswordModal({ isOpen, correctPassword, onUnlock }: PasswordMod
 
                     <button
                         type="submit"
-                        className="w-full py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-gold text-charcoal rounded-xl font-medium hover:bg-gold-dark transition-colors flex items-center justify-center gap-2"
                     >
                         Giriş Yap
                         <ArrowRight className="w-4 h-4" />

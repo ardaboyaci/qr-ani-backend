@@ -149,7 +149,7 @@ export function SettingsForm({ event }: { event: Event }) {
             {/* Event Details Form */}
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                 <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                    <Save className="w-5 h-5 text-emerald-600" />
+                    <Save className="w-5 h-5 text-gold" />
                     Etkinlik Detayları
                 </h2>
 
@@ -163,7 +163,7 @@ export function SettingsForm({ event }: { event: Event }) {
                             <input
                                 {...register('couple_name', { required: 'Çift isimleri zorunludur' })}
                                 type="text"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition-shadow"
                                 placeholder="Ayşe & Ahmet"
                             />
                             {errors.couple_name && <p className="text-sm text-red-500">{errors.couple_name.message}</p>}
@@ -177,7 +177,7 @@ export function SettingsForm({ event }: { event: Event }) {
                             <input
                                 {...register('wedding_date', { required: 'Tarih zorunludur' })}
                                 type="datetime-local"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition-shadow"
                             />
                             {errors.wedding_date && <p className="text-sm text-red-500">{errors.wedding_date.message}</p>}
                         </div>
@@ -191,7 +191,7 @@ export function SettingsForm({ event }: { event: Event }) {
                         <input
                             {...register('venue_name', { required: 'Mekan adı zorunludur' })}
                             type="text"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition-shadow"
                             placeholder="Grand Hotel Balo Salonu"
                         />
                         {errors.venue_name && <p className="text-sm text-red-500">{errors.venue_name.message}</p>}
@@ -200,7 +200,7 @@ export function SettingsForm({ event }: { event: Event }) {
                     <div className="pt-6 border-t border-gray-100">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                                {isPasswordEnabled ? <Lock className="w-5 h-5 text-emerald-600" /> : <Unlock className="w-5 h-5 text-gray-400" />}
+                                {isPasswordEnabled ? <Lock className="w-5 h-5 text-gold" /> : <Unlock className="w-5 h-5 text-gray-400" />}
                                 Şifre Koruması
                             </h3>
                             <label className="relative inline-flex items-center cursor-pointer">
@@ -209,7 +209,7 @@ export function SettingsForm({ event }: { event: Event }) {
                                     className="sr-only peer"
                                     {...register('is_password_enabled')}
                                 />
-                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gold/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
                             </label>
                         </div>
 
@@ -219,7 +219,7 @@ export function SettingsForm({ event }: { event: Event }) {
                                 <input
                                     {...register('password', { required: isPasswordEnabled ? 'Şifre zorunludur' : false })}
                                     type="text"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
                                     placeholder="Örn: 1234"
                                 />
                                 {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
@@ -235,7 +235,7 @@ export function SettingsForm({ event }: { event: Event }) {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-2.5 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-all shadow-sm hover:shadow flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2.5 bg-gold text-charcoal rounded-lg font-medium hover:bg-gold-dark transition-all shadow-sm hover:shadow flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Değişiklikleri Kaydet'}
                         </button>

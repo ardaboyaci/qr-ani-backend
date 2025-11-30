@@ -63,8 +63,8 @@ export function WhatsAppShareModal({ isOpen, onClose, eventSlug, coupleName }: W
                         onClick={e => e.stopPropagation()}
                     >
                         <div className="text-center mb-6">
-                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Share2 className="w-8 h-8 text-green-600" />
+                            <div className="bg-gold/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Share2 className="w-8 h-8 text-gold" />
                             </div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-2">Arkadaşların da eklesin! 🎉</h2>
                             <p className="text-gray-600">
@@ -85,7 +85,7 @@ export function WhatsAppShareModal({ isOpen, onClose, eventSlug, coupleName }: W
                                 onClick={handleCopy}
                                 className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors"
                             >
-                                {copied ? <Check className="w-5 h-5 text-green-600" /> : <Copy className="w-5 h-5" />}
+                                {copied ? <Check className="w-5 h-5 text-gold" /> : <Copy className="w-5 h-5" />}
                                 {copied ? 'Kopyalandı!' : 'Linki Kopyala'}
                             </button>
                         </div>
